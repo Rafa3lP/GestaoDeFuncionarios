@@ -1,3 +1,12 @@
-br\ufes\gestaodefuncionarios\presenter\PrincipalPresenter.class
+br\ufes\gestaodefuncionarios\view\PrincipalView$2.class
+br\ufes\gestaodefuncionarios\model\Funcionario.class
+br\ufes\gestaodefuncionarios\view\BuscarFuncionarioView.class
+br\ufes\gestaodefuncionarios\dao\FuncionarioDAO.class
+br\ufes\gestaodefuncionarios\factory\ConnectionFactory.class
 br\ufes\gestaodefuncionarios\view\PrincipalView$1.class
+br\ufes\gestaodefuncionarios\presenter\Inicializar.class
+br\ufes\gestaodefuncionarios\presenter\BuscarFuncionarioPresenter.class
+br\ufes\gestaodefuncionarios\presenter\PrincipalPresenter.class
+br\ufes\gestaodefuncionarios\view\ManterFuncionarioView.class
+br\ufes\gestaodefuncionarios\presenter\CriarFuncionarioPresenter.class
 br\ufes\gestaodefuncionarios\view\PrincipalView.class

@@ -12,6 +12,37 @@ import br.ufes.gestaodefuncionarios.view.PrincipalView;
  * @author Rafael
  */
 public class PrincipalPresenter {
+    
     private PrincipalView view;
+    
+    public PrincipalPresenter() {
+        this.view = new PrincipalView();
+        
+        this.view.getBtnFechar().addActionListener((e) -> {
+            fechar();
+        });
+        
+        this.view.getBtnNovo().addActionListener((e) -> {
+            criarFuncionario();
+        });
+        
+        this.view.getBtnBuscar().addActionListener((e) -> {
+            buscarFuncionario();
+        });
+        
+        this.view.setVisible(true);
+    }
+    
+    private void fechar() {
+        System.exit(0);
+    }
+    
+    private void criarFuncionario() {
+        new CriarFuncionarioPresenter(this.view.getDesktopPane());
+    }
+    
+    private void buscarFuncionario() {
+        new BuscarFuncionarioPresenter(this.view);
+    }
     
 }
