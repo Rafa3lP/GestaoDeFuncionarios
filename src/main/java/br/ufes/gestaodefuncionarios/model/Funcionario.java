@@ -20,6 +20,7 @@ public class Funcionario {
     private String cargo;
     private Date dtAdmissao;
     private boolean funcionarioMes;
+    private int faltas;
 
     public void setFuncionarioMes(boolean funcionarioMes) {
         this.funcionarioMes = funcionarioMes;
@@ -95,6 +96,14 @@ public class Funcionario {
     
     public boolean isFuncionarioMes() {
         return funcionarioMes;
+    }
+
+    public int getFaltas() {
+        return faltas;
+    }
+
+    public void setFaltas(int faltas) {
+        this.faltas = faltas;
     }
     
 }

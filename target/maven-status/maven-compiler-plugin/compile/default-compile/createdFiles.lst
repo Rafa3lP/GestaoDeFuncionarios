@@ -1,10 +1,15 @@
 br\ufes\gestaodefuncionarios\view\PrincipalView$2.class
+br\ufes\gestaodefuncionarios\components\JnumField$1.class
+br\ufes\gestaodefuncionarios\components\JnumField.class
 br\ufes\gestaodefuncionarios\model\Funcionario.class
 br\ufes\gestaodefuncionarios\view\BuscarFuncionarioView.class
 br\ufes\gestaodefuncionarios\dao\FuncionarioDAO.class
+br\ufes\gestaodefuncionarios\presenter\VisualizarFuncionarioPresenter.class
 br\ufes\gestaodefuncionarios\factory\ConnectionFactory.class
 br\ufes\gestaodefuncionarios\view\PrincipalView$1.class
 br\ufes\gestaodefuncionarios\presenter\Inicializar.class
+br\ufes\gestaodefuncionarios\components\JnumField$2.class
+br\ufes\gestaodefuncionarios\view\ManterFuncionarioView$1.class
 br\ufes\gestaodefuncionarios\presenter\BuscarFuncionarioPresenter.class
 br\ufes\gestaodefuncionarios\presenter\PrincipalPresenter.class
 br\ufes\gestaodefuncionarios\view\ManterFuncionarioView.class

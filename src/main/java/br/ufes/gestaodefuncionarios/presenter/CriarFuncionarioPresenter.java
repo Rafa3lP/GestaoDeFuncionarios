@@ -38,16 +38,17 @@ public class CriarFuncionarioPresenter {
         this.view.dispose();
     }
     private void salvar() {
-        String nome = view.getTxtNome().getText();
-        int idade = Integer.parseInt(view.getTxtIdade().getText());
-        double salario = Double.parseDouble(view.getTxtSalario().getText());
-        String cargo = (String) view.getCbCargo().getSelectedItem();
-        boolean funcionarioMes = view.getChkFuncionarioMes().isSelected();
-        
-        Date dtAdmissao = this.view.getDtAdmissao().getDate();
-        
-        Funcionario novoFuncionario = new Funcionario(nome, idade, salario, cargo, dtAdmissao, funcionarioMes);
         try {
+            String nome = view.getTxtNome().getText();
+            int idade = Integer.parseInt(view.getTxtIdade().getText());
+            double salario = Double.parseDouble(view.getTxtSalario().getText());
+            String cargo = (String) view.getCbCargo().getSelectedItem();
+            boolean funcionarioMes = view.getChkFuncionarioMes().isSelected();
+
+            Date dtAdmissao = this.view.getDtAdmissao().getDate();
+
+            Funcionario novoFuncionario = new Funcionario(nome, idade, salario, cargo, dtAdmissao, funcionarioMes);
+        
             dao = new FuncionarioDAO();
             dao.criar(novoFuncionario);
             limparCampos();

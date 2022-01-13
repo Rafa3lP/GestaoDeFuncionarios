@@ -7,28 +7,32 @@ package br.ufes.gestaodefuncionarios.dao;
 
 import br.ufes.gestaodefuncionarios.factory.ConnectionFactory;
 import br.ufes.gestaodefuncionarios.model.Funcionario;
-import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Rafael
  */
 public class FuncionarioDAO {
-    
-    private Connection conexao;
 
     public FuncionarioDAO() {
+        Connection con = null;
         try {
-            this.conexao = new ConnectionFactory().getConnection();
+            con = ConnectionFactory.getConnection();
             criaTFuncionario();
         } catch(RuntimeException ex) {
             throw new RuntimeException(ex);
+        } finally {
+            ConnectionFactory.closeConnection(con);
         }
         
     }
@@ -44,14 +48,20 @@ public class FuncionarioDAO {
                 + "funcionarioMes BOOLEAN NOT NULL"
                 + ")";
         
-        try {
-            Statement st = conexao.createStatement();
-            st.execute(sql);
-            st.close();
-        } catch (SQLException ex) {
-            throw new RuntimeException("Falha ao criar a tabela funcionario no banco", ex);
-        }
+        Connection con = null;
+        PreparedStatement pst = null;
         
+        try {
+            con = ConnectionFactory.getConnection();
+            pst = con.prepareStatement(sql);
+            pst.execute();
+        } catch (SQLException ex) {
+            Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Falha ao criar a tabela funcionario no banco", ex);
+        } finally {
+            ConnectionFactory.closeConnection(con, pst);
+        }
+                
     }
     
     public void criar(Funcionario funcionario) {
@@ -64,28 +74,37 @@ public class FuncionarioDAO {
                 + "funcionarioMes"
                 + ") VALUES(?,?,?,?,?,?)";
         
-        try { 
-            PreparedStatement stmt = conexao.prepareStatement(sql);
-            stmt.setString(1, funcionario.getNome());
-            stmt.setInt(2, funcionario.getIdade());
-            stmt.setDouble(3, funcionario.getSalario());
-            stmt.setString(4, funcionario.getCargo());
-            stmt.setDate(5, new java.sql.Date(funcionario.getDtAdmissao().getTime()));
-            stmt.setBoolean(6, funcionario.isFuncionarioMes());
-            stmt.execute();
-            stmt.close();
-        } catch (SQLException ex) { 
+        Connection con = null;
+        PreparedStatement pst = null;
+        try {
+            con = ConnectionFactory.getConnection();
+            pst = con.prepareStatement(sql);
+            pst.setString(1, funcionario.getNome());
+            pst.setInt(2, funcionario.getIdade());
+            pst.setDouble(3, funcionario.getSalario());
+            pst.setString(4, funcionario.getCargo());
+            pst.setDate(5, new java.sql.Date(funcionario.getDtAdmissao().getTime()));
+            pst.setBoolean(6, funcionario.isFuncionarioMes());
+            pst.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException("Falha ao inserir funcionario no banco", ex);
-        } 
+        } finally {
+            ConnectionFactory.closeConnection(con, pst);
+        }
     }
     
-    public ArrayList<Funcionario> getFuncionarios() {
+    public List<Funcionario> getFuncionarios() {
         String sql = "SELECT * FROM funcionario";
         Funcionario funcionario;
-        ArrayList<Funcionario> funcionarios = new ArrayList<>();
+        List<Funcionario> funcionarios = new ArrayList<>();
+        Connection con = null;
+        PreparedStatement pst = null;
+        ResultSet resultSet = null;
         try {
-            PreparedStatement stmt = conexao.prepareStatement(sql);
-            ResultSet resultSet = stmt.executeQuery();
+            con = ConnectionFactory.getConnection();
+            pst = con.prepareStatement(sql);
+            resultSet = pst.executeQuery();
 
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
@@ -96,27 +115,98 @@ public class FuncionarioDAO {
                 Date dtAdmissao = resultSet.getDate("admissao");
                 boolean funcionarioMes = resultSet.getBoolean("funcionarioMes");
                 funcionario = new Funcionario(id, nome, idade, salario, cargo, dtAdmissao, funcionarioMes);
-                System.out.println(funcionario.toString());
+                funcionarios.add(funcionario);
             }
-            stmt.close();
-            resultSet.close();
         } catch(SQLException ex) {
-            throw new RuntimeException("Falha ao consultar funcionario no banco", ex);
+            Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Falha ao consultar funcionarios no banco", ex);
+        } finally {
+            ConnectionFactory.closeConnection(con, pst, resultSet);
         }
         
-        return funcionarios;
+        return Collections.unmodifiableList(funcionarios);
+    }
+    
+    public Funcionario getFuncionarioById(int idFuncionario) {
+        String sql = "SELECT * FROM funcionario WHERE id = ?";
+        Funcionario funcionario;
+        Connection con = null;
+        PreparedStatement pst = null;
+        ResultSet resultSet = null;
+        try {
+            con = ConnectionFactory.getConnection();
+            pst = con.prepareStatement(sql);
+            pst.setInt(1, idFuncionario);
+            resultSet = pst.executeQuery();
+
+            int id = resultSet.getInt("id");
+            String nome = resultSet.getString("nome");
+            int idade = resultSet.getInt("idade");
+            double salario = resultSet.getDouble("salario");
+            String cargo = resultSet.getString("cargo");
+            Date dtAdmissao = resultSet.getDate("admissao");
+            boolean funcionarioMes = resultSet.getBoolean("funcionarioMes");
+            funcionario = new Funcionario(id, nome, idade, salario, cargo, dtAdmissao, funcionarioMes);
+            
+        } catch(SQLException ex) {
+            Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Falha ao obter funcionario do banco de dados", ex);
+        } finally {
+            ConnectionFactory.closeConnection(con, pst, resultSet);
+        }
+        
+        return funcionario;
+    }
+    
+    public List<Funcionario> getFuncionariosByNome(String nomeBusca) {
+        String sql = "SELECT * FROM funcionario WHERE nome LIKE ?";
+        Funcionario funcionario;
+        List<Funcionario> funcionarios = new ArrayList<>();
+        Connection con = null;
+        PreparedStatement pst = null;
+        ResultSet resultSet = null;
+        try {
+            con = ConnectionFactory.getConnection();
+            pst = con.prepareStatement(sql);
+            pst.setString(1, "%" + nomeBusca + "%");
+            resultSet = pst.executeQuery();
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String nome = resultSet.getString("nome");
+                int idade = resultSet.getInt("idade");
+                double salario = resultSet.getDouble("salario");
+                String cargo = resultSet.getString("cargo");
+                Date dtAdmissao = resultSet.getDate("admissao");
+                boolean funcionarioMes = resultSet.getBoolean("funcionarioMes");
+                funcionario = new Funcionario(id, nome, idade, salario, cargo, dtAdmissao, funcionarioMes);
+                funcionarios.add(funcionario);
+            }
+        } catch(SQLException ex) {
+            Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Falha ao buscar funcionarios no banco", ex);
+        } finally {
+            ConnectionFactory.closeConnection(con, pst, resultSet);
+        }
+        
+        return Collections.unmodifiableList(funcionarios);
     }
     
     public void deletar(Funcionario funcionario) {
         String sql = "DELETE FROM funcionario WHERE id = ?";
-        try { 
-            PreparedStatement stmt = conexao.prepareStatement(sql);
-            stmt.setInt(1, funcionario.getId());
-            stmt.execute();
-            stmt.close();
-        } catch (SQLException ex) { 
+        Connection con = null;
+        PreparedStatement pst = null;
+        try {
+            con = ConnectionFactory.getConnection();
+            pst = con.prepareStatement(sql);
+            pst.setInt(1, funcionario.getId());
+            pst.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException("Falha ao deletar funcionario no banco", ex);
-        } 
+        } finally {
+            ConnectionFactory.closeConnection(con, pst);
+        }
     }
     
     public void atualizar(Funcionario funcionario) {
@@ -128,20 +218,26 @@ public class FuncionarioDAO {
                 + "admissao = ?, "
                 + "funcionarioMes = ? "
                 + "WHERE id = ?";
+        
+        Connection con = null;
+        PreparedStatement pst = null;
         try { 
-            PreparedStatement stmt = conexao.prepareStatement(sql);
-            stmt.setString(1, funcionario.getNome());
-            stmt.setInt(2, funcionario.getIdade());
-            stmt.setDouble(3, funcionario.getSalario());
-            stmt.setString(4, funcionario.getCargo());
-            stmt.setDate(5, new java.sql.Date(funcionario.getDtAdmissao().getTime()));
-            stmt.setBoolean(6, funcionario.isFuncionarioMes());
-            stmt.setInt(7, funcionario.getId());
-            stmt.execute();
-            stmt.close();
+            con = ConnectionFactory.getConnection();
+            pst = con.prepareStatement(sql);
+            pst.setString(1, funcionario.getNome());
+            pst.setInt(2, funcionario.getIdade());
+            pst.setDouble(3, funcionario.getSalario());
+            pst.setString(4, funcionario.getCargo());
+            pst.setDate(5, new java.sql.Date(funcionario.getDtAdmissao().getTime()));
+            pst.setBoolean(6, funcionario.isFuncionarioMes());
+            pst.setInt(7, funcionario.getId());
+            pst.executeUpdate();
         } catch (SQLException ex) { 
+            Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException("Falha ao atualizar funcionario no banco", ex);
-        } 
+        } finally {
+            ConnectionFactory.closeConnection(con, pst);
+        }
     }
     
 }
