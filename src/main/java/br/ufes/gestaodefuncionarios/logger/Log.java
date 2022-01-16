@@ -5,15 +5,21 @@
  */
 package br.ufes.gestaodefuncionarios.logger;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+
 /**
  *
  * @author Rafael
  */
 public class Log {
+    
     private int tipo;
     private String msg;
 
-    public Log(int tipo, String msg) {
+    public Log(
+        @JacksonXmlProperty(localName = "tipo") int tipo, 
+        @JacksonXmlProperty(localName = "msg") String msg
+    ) {
         this.tipo = tipo;
         this.msg = msg;
     }

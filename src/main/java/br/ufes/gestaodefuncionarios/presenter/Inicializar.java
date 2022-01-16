@@ -12,5 +12,6 @@ package br.ufes.gestaodefuncionarios.presenter;
 public class Inicializar {
     public static void main(String[] args) {
         new PrincipalPresenter();
+        
     }
 }

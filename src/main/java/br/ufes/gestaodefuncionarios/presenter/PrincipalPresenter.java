@@ -8,6 +8,7 @@ package br.ufes.gestaodefuncionarios.presenter;
 import br.ufes.gestaodefuncionarios.logger.IMetodoLog;
 import br.ufes.gestaodefuncionarios.logger.LogJSON;
 import br.ufes.gestaodefuncionarios.logger.LogTxt;
+import br.ufes.gestaodefuncionarios.logger.LogXml;
 import br.ufes.gestaodefuncionarios.prop.PropertieManager;
 import br.ufes.gestaodefuncionarios.view.PrincipalView;
 import javax.swing.JOptionPane;
@@ -41,7 +42,7 @@ public class PrincipalPresenter {
             this.metodoLog = new LogJSON();
         } else if(logFormat.equals("xml")){
             this.view.getLblLogFormat().setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/xml-48.png")));
-            //this.metodoLog = new LogXml();
+            this.metodoLog = new LogXml();
         }
         
         if(this.metodoLog == null) {

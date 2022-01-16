@@ -7,18 +7,14 @@ package br.ufes.gestaodefuncionarios.logger;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 
 /**
  *
@@ -29,8 +25,6 @@ public class LogTxt implements IMetodoLog {
     private String logFile;
     private FileWriter fw;
     private BufferedWriter bw;
-    private FileReader fr;
-    private BufferedReader br;
     
     @Override
     public void escreveLog(Log log) {
@@ -53,10 +47,6 @@ public class LogTxt implements IMetodoLog {
             bw.newLine();
             bw.close();
             fw.close();
-            List<Log> l = getLogs();
-            l.forEach(lg -> {
-                System.out.println(lg);
-            });
         } catch(IOException ex) {
             JOptionPane.showMessageDialog(null, "Não foi possivel gravar o arquivo de log", "Erro", JOptionPane.ERROR_MESSAGE);
         }
@@ -65,9 +55,11 @@ public class LogTxt implements IMetodoLog {
     @Override
     public void migraLog(IMetodoLog metodoLogOld) {
         List<Log> logsOld = metodoLogOld.getLogs();
+        this.remover(new File("log/"));
         for(Log l: logsOld) {
-            escreveLog(l);
+            this.escreveLog(l);
         }
+        this.escreveLog(new Log(IMetodoLog.LOG_INFORMATION, "MUDANÇA PARA FORMATO DE LOG TXT"));
     }
     
     @Override
@@ -93,6 +85,8 @@ public class LogTxt implements IMetodoLog {
                 logs.add(newLog);
                 
             }
+            fileReader.close();
+            bufferedReader.close();
         } catch (FileNotFoundException ex) {
             JOptionPane.showMessageDialog(null, "Não foi possivel encontrar o arquivo de log", "Erro", JOptionPane.ERROR_MESSAGE);
         } catch (IOException ex) {
@@ -100,6 +94,19 @@ public class LogTxt implements IMetodoLog {
         }
         
         return logs;
+    }
+    
+    private void remover(File f) {
+        if (f.isDirectory()) {
+            File[] files = f.listFiles();
+            for (int i = 0; i < files.length; ++i) {
+                this.remover (files[i]);
+            }
+        } else {
+            f.delete();
+            System.gc();
+        }
+        
     }
     
 }

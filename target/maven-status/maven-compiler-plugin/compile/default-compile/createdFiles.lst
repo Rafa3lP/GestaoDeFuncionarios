@@ -17,6 +17,7 @@ br\ufes\gestaodefuncionarios\logger\LogJSON.class
 br\ufes\gestaodefuncionarios\model\BonusGeneroso.class
 br\ufes\gestaodefuncionarios\presenter\ConfigPresenter.class
 br\ufes\gestaodefuncionarios\model\IMetodoCalculoBonus.class
+.netbeans_automatic_build
 br\ufes\gestaodefuncionarios\presenter\CalcularSalarioPresenter.class
 br\ufes\gestaodefuncionarios\presenter\VisualizarFuncionarioPresenter.class
 br\ufes\gestaodefuncionarios\factory\ConnectionFactory.class
@@ -30,3 +31,4 @@ br\ufes\gestaodefuncionarios\model\Bonus.class
 br\ufes\gestaodefuncionarios\view\ManterFuncionarioView.class
 br\ufes\gestaodefuncionarios\view\ConfigView.class
 br\ufes\gestaodefuncionarios\presenter\CriarFuncionarioPresenter.class
+br\ufes\gestaodefuncionarios\logger\LogXml.class

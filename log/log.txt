@@ -1,7 +1,0 @@
-INFO->Funcionario dfgdfgfd removido
-ERROR->Falha ao realizar operação
-INFO->Funcionario dfdsf adicionado
-INFO->Funcionario dfdsf removido
-INFO->Funcionario Rafael adicionado
-INFO->Funcionario Marjorie adicionado
-INFO->Funcionario Marjorie removido
