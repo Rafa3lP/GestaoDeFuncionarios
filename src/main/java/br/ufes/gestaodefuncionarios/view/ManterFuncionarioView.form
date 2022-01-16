@@ -155,11 +155,10 @@
         <Component class="javax.swing.JComboBox" name="cbBonus">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="4">
-                <StringItem index="0" value="Item 1"/>
-                <StringItem index="1" value="Item 2"/>
-                <StringItem index="2" value="Item 3"/>
-                <StringItem index="3" value="Item 4"/>
+              <StringArray count="3">
+                <StringItem index="0" value="&lt;selecione&gt;"/>
+                <StringItem index="1" value="Normal"/>
+                <StringItem index="2" value="Generoso"/>
               </StringArray>
             </Property>
           </Properties>
@@ -168,6 +167,9 @@
           </AuxValues>
         </Component>
         <Component class="br.ufes.gestaodefuncionarios.components.JnumField" name="txtFaltas">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
@@ -196,11 +198,17 @@
           </Properties>
         </Component>
         <Component class="br.ufes.gestaodefuncionarios.components.JnumField" name="txtIdade">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtIdadeActionPerformed"/>
           </Events>
         </Component>
         <Component class="br.ufes.gestaodefuncionarios.components.JnumField" name="txtSalario">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>

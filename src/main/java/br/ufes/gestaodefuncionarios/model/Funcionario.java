@@ -5,6 +5,7 @@
  */
 package br.ufes.gestaodefuncionarios.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -17,32 +18,38 @@ public class Funcionario {
     private String nome;
     private int idade;
     private double salario;
+    private double salarioBase;
     private String cargo;
     private Date dtAdmissao;
     private boolean funcionarioMes;
     private int faltas;
+    private ArrayList<Bonus> bonusRecebidos;
 
     public void setFuncionarioMes(boolean funcionarioMes) {
         this.funcionarioMes = funcionarioMes;
     }
 
-    public Funcionario(String nome, int idade, double salario, String cargo, Date dtAdmissao, boolean funcionarioMes) {
-        this.nome = nome;
-        this.idade = idade;
-        this.salario = salario;
-        this.cargo = cargo;
-        this.dtAdmissao = dtAdmissao;
-        this.funcionarioMes = funcionarioMes;
+    public Funcionario(String nome, int idade, double salarioBase, String cargo, Date dtAdmissao, boolean funcionarioMes, int faltas) {
+        setNome(nome);
+        setIdade(idade);
+        setSalarioBase(salarioBase);
+        setCargo(cargo);
+        setDtAdmissao(dtAdmissao);
+        setFuncionarioMes(funcionarioMes);
+        setFaltas(faltas);
+        bonusRecebidos = new ArrayList<>();
     }
     
-    public Funcionario(int id, String nome, int idade, double salario, String cargo, Date dtAdmissao, boolean funcionarioMes) {
+    public Funcionario(int id, String nome, int idade, double salarioBase, String cargo, Date dtAdmissao, boolean funcionarioMes, int faltas) {
         this.id = id;
-        this.nome = nome;
-        this.idade = idade;
-        this.salario = salario;
-        this.cargo = cargo;
-        this.dtAdmissao = dtAdmissao;
-        this.funcionarioMes = funcionarioMes;
+        setNome(nome);
+        setIdade(idade);
+        setSalarioBase(salarioBase);
+        setCargo(cargo);
+        setDtAdmissao(dtAdmissao);
+        setFuncionarioMes(funcionarioMes);
+        setFaltas(faltas);
+        bonusRecebidos = new ArrayList<>();
     }
     
     @Override
@@ -104,6 +111,22 @@ public class Funcionario {
 
     public void setFaltas(int faltas) {
         this.faltas = faltas;
+    }
+
+    public double getSalarioBase() {
+        return salarioBase;
+    }
+
+    public void setSalarioBase(double salarioBase) {
+        this.salarioBase = salarioBase;
+    }
+    
+    public void addBonus(Bonus bonus) {
+        this.bonusRecebidos.add(bonus);
+    }
+    
+    public void calcularSalario() {
+        setSalario(0);
     }
     
 }

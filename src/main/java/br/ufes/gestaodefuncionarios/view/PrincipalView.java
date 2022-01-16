@@ -6,6 +6,8 @@
 package br.ufes.gestaodefuncionarios.view;
 
 import javax.swing.JDesktopPane;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 /**
@@ -31,171 +33,172 @@ public class PrincipalView extends javax.swing.JFrame {
     private void initComponents() {
 
         desktopPane = new javax.swing.JDesktopPane();
-        jPanel2 = new javax.swing.JPanel();
+        pInferior = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        lblVersao = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        lblNumFuncionarios = new javax.swing.JLabel();
+        lblLogFormat = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
-        fileMenu = new javax.swing.JMenu();
+        menuFuncionario = new javax.swing.JMenu();
         btnNovo = new javax.swing.JMenuItem();
         btnBuscar = new javax.swing.JMenuItem();
         btnFechar = new javax.swing.JMenuItem();
-        editMenu = new javax.swing.JMenu();
-        cutMenuItem = new javax.swing.JMenuItem();
-        copyMenuItem = new javax.swing.JMenuItem();
-        pasteMenuItem = new javax.swing.JMenuItem();
-        deleteMenuItem = new javax.swing.JMenuItem();
-        helpMenu = new javax.swing.JMenu();
-        contentMenuItem = new javax.swing.JMenuItem();
-        aboutMenuItem = new javax.swing.JMenuItem();
+        menuSalario = new javax.swing.JMenu();
+        btnCalcular = new javax.swing.JMenuItem();
+        menuFerramentas = new javax.swing.JMenu();
+        btnConfiguracoes = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gestão de Funcionários");
         setBackground(new java.awt.Color(238, 238, 238));
         setIconImage(new javax.swing.ImageIcon(getClass().getResource("/img/people-48.png")).getImage());
+        setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        desktopPane.setBackground(new java.awt.Color(0, 114, 162));
-        getContentPane().add(desktopPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 980, 460));
+        desktopPane.setBackground(new java.awt.Color(89, 118, 124));
 
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setForeground(new java.awt.Color(255, 255, 255));
-        jPanel2.setFocusable(false);
+        javax.swing.GroupLayout desktopPaneLayout = new javax.swing.GroupLayout(desktopPane);
+        desktopPane.setLayout(desktopPaneLayout);
+        desktopPaneLayout.setHorizontalGroup(
+            desktopPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1110, Short.MAX_VALUE)
+        );
+        desktopPaneLayout.setVerticalGroup(
+            desktopPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 480, Short.MAX_VALUE)
+        );
+
+        getContentPane().add(desktopPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1110, 480));
+
+        pInferior.setBackground(new java.awt.Color(255, 255, 255));
+        pInferior.setForeground(new java.awt.Color(255, 255, 255));
+        pInferior.setFocusable(false);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/versao-50.png"))); // NOI18N
+        jLabel1.setLabelFor(lblVersao);
 
-        jLabel5.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("0");
+        lblVersao.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        lblVersao.setForeground(new java.awt.Color(0, 0, 0));
+        lblVersao.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblVersao.setText("0");
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/people-50.png"))); // NOI18N
+        jLabel2.setLabelFor(lblNumFuncionarios);
 
-        jLabel4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("0");
+        lblNumFuncionarios.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        lblNumFuncionarios.setForeground(new java.awt.Color(0, 0, 0));
+        lblNumFuncionarios.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblNumFuncionarios.setText("0");
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/xml-48.png"))); // NOI18N
+        lblLogFormat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/help-48.png"))); // NOI18N
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        javax.swing.GroupLayout pInferiorLayout = new javax.swing.GroupLayout(pInferior);
+        pInferior.setLayout(pInferiorLayout);
+        pInferiorLayout.setHorizontalGroup(
+            pInferiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pInferiorLayout.createSequentialGroup()
+                .addContainerGap(10, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 9, Short.MAX_VALUE)
-                .addGap(385, 385, 385)
-                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblVersao, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 415, Short.MAX_VALUE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(391, 391, 391)
-                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(15, 15, 15))
+                .addComponent(lblNumFuncionarios, javax.swing.GroupLayout.DEFAULT_SIZE, 10, Short.MAX_VALUE)
+                .addGap(445, 445, 445)
+                .addComponent(lblLogFormat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(21, 21, 21))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        pInferiorLayout.setVerticalGroup(
+            pInferiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pInferiorLayout.createSequentialGroup()
                 .addContainerGap(14, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))
+                .addGroup(pInferiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pInferiorLayout.createSequentialGroup()
+                        .addGroup(pInferiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(pInferiorLayout.createSequentialGroup()
+                                .addComponent(lblLogFormat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(2, 2, 2)))
                         .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pInferiorLayout.createSequentialGroup()
+                        .addComponent(lblNumFuncionarios)
                         .addGap(18, 18, 18))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pInferiorLayout.createSequentialGroup()
+                        .addComponent(lblVersao)
                         .addGap(20, 20, 20))))
         );
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 460, 980, 70));
+        getContentPane().add(pInferior, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 480, 1110, 70));
 
         menuBar.setBorder(null);
 
-        fileMenu.setMnemonic('f');
-        fileMenu.setText("Funcionários");
-        fileMenu.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        menuFuncionario.setMnemonic('f');
+        menuFuncionario.setText("Funcionários");
+        menuFuncionario.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         btnNovo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         btnNovo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/add-user-24.png"))); // NOI18N
         btnNovo.setMnemonic('o');
         btnNovo.setText("Novo");
-        btnNovo.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         btnNovo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNovoActionPerformed(evt);
             }
         });
-        fileMenu.add(btnNovo);
+        menuFuncionario.add(btnNovo);
 
         btnBuscar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         btnBuscar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/search-24.png"))); // NOI18N
         btnBuscar.setMnemonic('s');
         btnBuscar.setText("Buscar");
-        btnBuscar.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        fileMenu.add(btnBuscar);
+        menuFuncionario.add(btnBuscar);
 
         btnFechar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_DOWN_MASK));
         btnFechar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/close.png"))); // NOI18N
         btnFechar.setMnemonic('x');
         btnFechar.setText("Fechar");
-        btnFechar.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         btnFechar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnFecharActionPerformed(evt);
             }
         });
-        fileMenu.add(btnFechar);
+        menuFuncionario.add(btnFechar);
 
-        menuBar.add(fileMenu);
+        menuBar.add(menuFuncionario);
 
-        editMenu.setMnemonic('e');
-        editMenu.setText("Salário");
-        editMenu.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        menuSalario.setText("Salário");
+        menuSalario.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
-        cutMenuItem.setMnemonic('t');
-        cutMenuItem.setText("Cut");
-        editMenu.add(cutMenuItem);
+        btnCalcular.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_J, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        btnCalcular.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnCalcular.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cheap-24.png"))); // NOI18N
+        btnCalcular.setText("Calcular");
+        menuSalario.add(btnCalcular);
 
-        copyMenuItem.setMnemonic('y');
-        copyMenuItem.setText("Copy");
-        editMenu.add(copyMenuItem);
+        menuBar.add(menuSalario);
 
-        pasteMenuItem.setMnemonic('p');
-        pasteMenuItem.setText("Paste");
-        editMenu.add(pasteMenuItem);
+        menuFerramentas.setMnemonic('h');
+        menuFerramentas.setText("Ferramentas");
+        menuFerramentas.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
-        deleteMenuItem.setMnemonic('d');
-        deleteMenuItem.setText("Delete");
-        editMenu.add(deleteMenuItem);
+        btnConfiguracoes.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        btnConfiguracoes.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnConfiguracoes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/gear-24.png"))); // NOI18N
+        btnConfiguracoes.setMnemonic('c');
+        btnConfiguracoes.setText("Configurações");
+        menuFerramentas.add(btnConfiguracoes);
 
-        menuBar.add(editMenu);
-
-        helpMenu.setMnemonic('h');
-        helpMenu.setText("Ferramentas");
-        helpMenu.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-
-        contentMenuItem.setMnemonic('c');
-        contentMenuItem.setText("Contents");
-        helpMenu.add(contentMenuItem);
-
-        aboutMenuItem.setMnemonic('a');
-        aboutMenuItem.setText("About");
-        helpMenu.add(aboutMenuItem);
-
-        menuBar.add(helpMenu);
+        menuBar.add(menuFerramentas);
 
         setJMenuBar(menuBar);
 
-        setSize(new java.awt.Dimension(998, 593));
+        setSize(new java.awt.Dimension(1125, 614));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -212,26 +215,22 @@ public class PrincipalView extends javax.swing.JFrame {
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JMenuItem btnBuscar;
+    private javax.swing.JMenuItem btnCalcular;
+    private javax.swing.JMenuItem btnConfiguracoes;
     private javax.swing.JMenuItem btnFechar;
     private javax.swing.JMenuItem btnNovo;
-    private javax.swing.JMenuItem contentMenuItem;
-    private javax.swing.JMenuItem copyMenuItem;
-    private javax.swing.JMenuItem cutMenuItem;
-    private javax.swing.JMenuItem deleteMenuItem;
     private javax.swing.JDesktopPane desktopPane;
-    private javax.swing.JMenu editMenu;
-    private javax.swing.JMenu fileMenu;
-    private javax.swing.JMenu helpMenu;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lblLogFormat;
+    private javax.swing.JLabel lblNumFuncionarios;
+    private javax.swing.JLabel lblVersao;
     private javax.swing.JMenuBar menuBar;
-    private javax.swing.JMenuItem pasteMenuItem;
+    private javax.swing.JMenu menuFerramentas;
+    private javax.swing.JMenu menuFuncionario;
+    private javax.swing.JMenu menuSalario;
+    private javax.swing.JPanel pInferior;
     // End of variables declaration//GEN-END:variables
 
     public JMenuItem getBtnFechar() {
@@ -248,6 +247,26 @@ public class PrincipalView extends javax.swing.JFrame {
 
     public JMenuItem getBtnBuscar() {
         return btnBuscar;
+    }
+
+    public JMenuItem getBtnCalcular() {
+        return btnCalcular;
+    }
+
+    public JLabel getLblNumFuncionarios() {
+        return lblNumFuncionarios;
+    }
+
+    public JMenuItem getBtnConfiguracoes() {
+        return btnConfiguracoes;
+    }
+
+    public JLabel getLblVersao() {
+        return lblVersao;
+    }
+
+    public JLabel getLblLogFormat() {
+        return lblLogFormat;
     }
 
 }

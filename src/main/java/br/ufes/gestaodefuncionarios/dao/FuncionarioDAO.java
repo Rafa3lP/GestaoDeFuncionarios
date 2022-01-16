@@ -42,10 +42,11 @@ public class FuncionarioDAO {
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "nome VARCHAR NOT NULL, "
                 + "idade INTEGER NOT NULL, "
-                + "salario DECIMAL(19, 4) NOT NULL, "
+                + "salarioBase DECIMAL(19, 4) NOT NULL, "
                 + "cargo VARCHAR NOT NULL, "
                 + "admissao DATE NOT NULL, "
-                + "funcionarioMes BOOLEAN NOT NULL"
+                + "funcionarioMes BOOLEAN NOT NULL,"
+                + "faltas INTEGER NOT NULL"
                 + ")";
         
         Connection con = null;
@@ -58,6 +59,7 @@ public class FuncionarioDAO {
         } catch (SQLException ex) {
             Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException("Falha ao criar a tabela funcionario no banco", ex);
+            
         } finally {
             ConnectionFactory.closeConnection(con, pst);
         }
@@ -68,11 +70,12 @@ public class FuncionarioDAO {
         String sql = "INSERT INTO funcionario("
                 + "nome, "
                 + "idade, "
-                + "salario, "
+                + "salarioBase, "
                 + "cargo, "
                 + "admissao, "
-                + "funcionarioMes"
-                + ") VALUES(?,?,?,?,?,?)";
+                + "funcionarioMes, "
+                + "faltas"
+                + ") VALUES(?,?,?,?,?,?,?)";
         
         Connection con = null;
         PreparedStatement pst = null;
@@ -81,10 +84,11 @@ public class FuncionarioDAO {
             pst = con.prepareStatement(sql);
             pst.setString(1, funcionario.getNome());
             pst.setInt(2, funcionario.getIdade());
-            pst.setDouble(3, funcionario.getSalario());
+            pst.setDouble(3, funcionario.getSalarioBase());
             pst.setString(4, funcionario.getCargo());
             pst.setDate(5, new java.sql.Date(funcionario.getDtAdmissao().getTime()));
             pst.setBoolean(6, funcionario.isFuncionarioMes());
+            pst.setInt(7, funcionario.getFaltas());
             pst.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -110,11 +114,12 @@ public class FuncionarioDAO {
                 int id = resultSet.getInt("id");
                 String nome = resultSet.getString("nome");
                 int idade = resultSet.getInt("idade");
-                double salario = resultSet.getDouble("salario");
+                double salarioBase = resultSet.getDouble("salarioBase");
                 String cargo = resultSet.getString("cargo");
                 Date dtAdmissao = resultSet.getDate("admissao");
                 boolean funcionarioMes = resultSet.getBoolean("funcionarioMes");
-                funcionario = new Funcionario(id, nome, idade, salario, cargo, dtAdmissao, funcionarioMes);
+                int faltas = resultSet.getInt("faltas");
+                funcionario = new Funcionario(id, nome, idade, salarioBase, cargo, dtAdmissao, funcionarioMes, faltas);
                 funcionarios.add(funcionario);
             }
         } catch(SQLException ex) {
@@ -142,14 +147,15 @@ public class FuncionarioDAO {
             int id = resultSet.getInt("id");
             String nome = resultSet.getString("nome");
             int idade = resultSet.getInt("idade");
-            double salario = resultSet.getDouble("salario");
+            double salarioBase = resultSet.getDouble("salarioBase");
             String cargo = resultSet.getString("cargo");
             Date dtAdmissao = resultSet.getDate("admissao");
             boolean funcionarioMes = resultSet.getBoolean("funcionarioMes");
-            funcionario = new Funcionario(id, nome, idade, salario, cargo, dtAdmissao, funcionarioMes);
+            int faltas = resultSet.getInt("faltas");
+            funcionario = new Funcionario(id, nome, idade, salarioBase, cargo, dtAdmissao, funcionarioMes, faltas);
             
         } catch(SQLException ex) {
-            Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException("Falha ao obter funcionario do banco de dados", ex);
         } finally {
             ConnectionFactory.closeConnection(con, pst, resultSet);
@@ -175,11 +181,12 @@ public class FuncionarioDAO {
                 int id = resultSet.getInt("id");
                 String nome = resultSet.getString("nome");
                 int idade = resultSet.getInt("idade");
-                double salario = resultSet.getDouble("salario");
+                double salarioBase = resultSet.getDouble("salarioBase");
                 String cargo = resultSet.getString("cargo");
                 Date dtAdmissao = resultSet.getDate("admissao");
                 boolean funcionarioMes = resultSet.getBoolean("funcionarioMes");
-                funcionario = new Funcionario(id, nome, idade, salario, cargo, dtAdmissao, funcionarioMes);
+                int faltas = resultSet.getInt("faltas");
+                funcionario = new Funcionario(id, nome, idade, salarioBase, cargo, dtAdmissao, funcionarioMes, faltas);
                 funcionarios.add(funcionario);
             }
         } catch(SQLException ex) {
@@ -213,10 +220,11 @@ public class FuncionarioDAO {
         String sql = "UPDATE funcionario SET "
                 + "nome = ?, "
                 + "idade = ?, "
-                + "salario = ?, "
+                + "salarioBase = ?, "
                 + "cargo = ?, "
                 + "admissao = ?, "
-                + "funcionarioMes = ? "
+                + "funcionarioMes = ?, "
+                + "faltas = ? "
                 + "WHERE id = ?";
         
         Connection con = null;
@@ -226,11 +234,12 @@ public class FuncionarioDAO {
             pst = con.prepareStatement(sql);
             pst.setString(1, funcionario.getNome());
             pst.setInt(2, funcionario.getIdade());
-            pst.setDouble(3, funcionario.getSalario());
+            pst.setDouble(3, funcionario.getSalarioBase());
             pst.setString(4, funcionario.getCargo());
             pst.setDate(5, new java.sql.Date(funcionario.getDtAdmissao().getTime()));
             pst.setBoolean(6, funcionario.isFuncionarioMes());
-            pst.setInt(7, funcionario.getId());
+            pst.setInt(7, funcionario.getFaltas());
+            pst.setInt(8, funcionario.getId());
             pst.executeUpdate();
         } catch (SQLException ex) { 
             Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);

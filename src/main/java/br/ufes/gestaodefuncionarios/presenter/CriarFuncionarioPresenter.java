@@ -6,10 +6,15 @@
 package br.ufes.gestaodefuncionarios.presenter;
 
 import br.ufes.gestaodefuncionarios.dao.FuncionarioDAO;
+import br.ufes.gestaodefuncionarios.logger.IMetodoLog;
+import br.ufes.gestaodefuncionarios.logger.Log;
+import br.ufes.gestaodefuncionarios.model.BonusGeneroso;
+import br.ufes.gestaodefuncionarios.model.BonusNormal;
 import br.ufes.gestaodefuncionarios.model.Funcionario;
 import br.ufes.gestaodefuncionarios.view.ManterFuncionarioView;
+import br.ufes.gestaodefuncionarios.view.PrincipalView;
+import java.io.IOException;
 import java.util.Date;
-import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,19 +24,24 @@ import javax.swing.JOptionPane;
 public class CriarFuncionarioPresenter {
     private FuncionarioDAO dao;
     private ManterFuncionarioView view;
+    private PrincipalView principalView;
+    private IMetodoLog metodoLog;
 
-    public CriarFuncionarioPresenter(JDesktopPane desktopPane) {
+    public CriarFuncionarioPresenter(PrincipalView principalView, IMetodoLog metodoLog) {
+        this.metodoLog = metodoLog;
         this.view = new ManterFuncionarioView();
+        this.principalView = principalView;
         this.view.setTitle("Novo Funcionário");
         this.view.getBtnExcluir().setVisible(false);
         this.view.getBtnEditar().setVisible(false);
+   
         this.view.getBtnFechar().addActionListener((e) -> {
             fechar();
         });
         this.view.getBtnSalvar().addActionListener((e) -> {
             salvar();
         });
-        desktopPane.add(view);
+        this.principalView.getDesktopPane().add(view);
         this.view.setVisible(true);
     }
     private void fechar() {
@@ -39,23 +49,28 @@ public class CriarFuncionarioPresenter {
     }
     private void salvar() {
         try {
-            String nome = view.getTxtNome().getText();
-            int idade = Integer.parseInt(view.getTxtIdade().getText());
-            double salario = Double.parseDouble(view.getTxtSalario().getText());
-            String cargo = (String) view.getCbCargo().getSelectedItem();
-            boolean funcionarioMes = view.getChkFuncionarioMes().isSelected();
-
-            Date dtAdmissao = this.view.getDtAdmissao().getDate();
-
-            Funcionario novoFuncionario = new Funcionario(nome, idade, salario, cargo, dtAdmissao, funcionarioMes);
-        
+            
+            Funcionario novoFuncionario = getFuncionario();
+   
             dao = new FuncionarioDAO();
             dao.criar(novoFuncionario);
+            
+            JOptionPane.showMessageDialog(
+                    view, 
+                    "Funcionario Adicionado!", 
+                    "Sucesso", 
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+            
+            this.metodoLog.escreveLog(new Log(IMetodoLog.LOG_INFORMATION, "Funcionario " + novoFuncionario.getNome() + " adicionado"));
+            
             limparCampos();
-            JOptionPane.showMessageDialog(view, "Funcionario Adicionado!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-            dao.getFuncionarios();
+            
         } catch(RuntimeException ex) {
             JOptionPane.showMessageDialog(view, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            this.metodoLog.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao realizar a operação"));
+        } catch(IOException ex) {
+            JOptionPane.showMessageDialog(view, ex.getMessage(), "Aviso", JOptionPane.WARNING_MESSAGE);
         }
         
     }
@@ -70,4 +85,45 @@ public class CriarFuncionarioPresenter {
         view.getChkFuncionarioMes().setSelected(false);
         view.getDtAdmissao().setDate(new Date());
     }
+    
+    private Funcionario getFuncionario() throws IOException {
+        
+        String nome = view.getTxtNome().getText();
+        int faltas = Integer.parseInt(view.getTxtFaltas().getText());
+        int idade = Integer.parseInt(view.getTxtIdade().getText());
+        double salario = Double.parseDouble(view.getTxtSalario().getText());
+        String cargo = (String) view.getCbCargo().getSelectedItem();
+        boolean funcionarioMes = view.getChkFuncionarioMes().isSelected();
+        Date dtAdmissao = this.view.getDtAdmissao().getDate();
+
+        if(nome.trim().isEmpty()) {
+            throw new IOException("Preencha corretamente o campo nome");
+        } else if (idade == 0) {
+            throw new IOException("Preencha corretamente o campo idade");
+        } else if (salario == 0) {
+            throw new IOException("Preencha corretamente o campo salário");
+        } else if(cargo.equals("<selecione>")) {
+            throw new IOException("Selecione um cargo válido");
+        } else {
+            Funcionario novoFuncionario = new Funcionario(nome, idade, salario, cargo, dtAdmissao, funcionarioMes, faltas);
+            int bonus = view.getCbBonus().getSelectedIndex();
+            switch(bonus) {
+                case 0:
+                    throw new IOException("Selecione um bonus válido");
+                case 1:
+                    new BonusNormal().calcular(novoFuncionario);
+                    break;
+                case 2:
+                    new BonusGeneroso().calcular(novoFuncionario);
+                    break;
+                default:
+                    throw new IOException("O bônus selecionado é desconhecido");
+            }
+            
+            return novoFuncionario;
+            
+        }
+
+    } 
+    
 }

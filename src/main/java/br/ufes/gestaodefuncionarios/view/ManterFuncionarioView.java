@@ -26,9 +26,11 @@ public class ManterFuncionarioView extends javax.swing.JInternalFrame {
         initComponents();
         dtAdmissao = new JDateChooser("dd/MM/yyyy", "##/##/####", '_');
         dtAdmissao.setDate(new Date());
-        dtAdmissao.setBounds(440, 148, 120, 20);
+        dtAdmissao.setBounds(440, 135, 124, 22);
         dtAdmissao.setMaxSelectableDate(new Date());
-        this.add(dtAdmissao);
+        
+        this.jPanel1.add(dtAdmissao);
+        
         this.txtSalario.setType(1);
         this.txtIdade.setMaxCaracteres(3);
         this.txtFaltas.setMaxCaracteres(5);
@@ -65,7 +67,9 @@ public class ManterFuncionarioView extends javax.swing.JInternalFrame {
 
         cbCargo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<selecione>", "Estagiário", "Vendedor" }));
 
-        cbBonus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbBonus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<selecione>", "Normal", "Generoso" }));
+
+        txtFaltas.setText("0");
 
         jLabel1.setText("Cargo");
 
@@ -78,11 +82,14 @@ public class ManterFuncionarioView extends javax.swing.JInternalFrame {
         chkFuncionarioMes.setText("Funcionario do mês");
         chkFuncionarioMes.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
+        txtIdade.setText("0");
         txtIdade.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtIdadeActionPerformed(evt);
             }
         });
+
+        txtSalario.setText("0");
 
         jLabel5.setText("Idade");
 

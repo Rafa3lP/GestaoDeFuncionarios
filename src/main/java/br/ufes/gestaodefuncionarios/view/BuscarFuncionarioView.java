@@ -54,7 +54,15 @@ public class BuscarFuncionarioView extends javax.swing.JInternalFrame {
             new String [] {
                 "ID", "Nome", "Idade", "Cargo", "Salário Base (R$)"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tFuncionarios);
 
         btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/add-user-24.png"))); // NOI18N
@@ -167,7 +175,7 @@ public class BuscarFuncionarioView extends javax.swing.JInternalFrame {
         return txtNome;
     }
 
-    public JTable gettFuncionarios() {
+    public JTable getTFuncionarios() {
         return tFuncionarios;
     }
 }
