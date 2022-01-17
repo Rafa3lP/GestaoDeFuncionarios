@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
 /**
@@ -17,10 +16,11 @@ import java.util.Properties;
  * @author Rafael
  */
 public class PropertieManager {
-    private final String CONFIG_FILE = "config.ini";
+    private final String CONFIG_PATH = "config.ini";
     
     public String getProperty(String key) {
-        File file = new File(CONFIG_FILE);
+    
+        File file = new File(CONFIG_PATH);
         Properties properties = new Properties();
 
         try {
@@ -35,7 +35,8 @@ public class PropertieManager {
     }
     
     public void setProp(String key, String value) {
-        File file = new File(CONFIG_FILE);
+        
+        File file = new File(CONFIG_PATH);
         Properties properties = new Properties();
 
         try {

@@ -13,6 +13,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -28,6 +30,20 @@ public class LogJSON implements IMetodoLog {
     private BufferedWriter bw;
     private FileReader fr;
     private BufferedReader br;
+
+    public LogJSON() {
+        if(!new File("log").exists()) {
+            new File("log").mkdir();
+        }
+        File arq = new File("log/log.json");
+        if(!arq.exists()) {
+            try {
+                arq.createNewFile();
+            } catch (IOException ex) {
+                Logger.getLogger(LogTxt.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 
     @Override
     public void escreveLog(Log log) {

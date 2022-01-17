@@ -18,7 +18,6 @@ import java.net.URL;
 import java.security.CodeSource;
 import java.security.ProtectionDomain;
 import javax.swing.JOptionPane;
-import org.sqlite.SQLiteConfig;
 
 /**
  *

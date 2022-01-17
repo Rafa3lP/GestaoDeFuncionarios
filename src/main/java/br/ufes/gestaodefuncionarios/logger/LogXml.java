@@ -8,11 +8,9 @@ package br.ufes.gestaodefuncionarios.logger;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import java.beans.XMLDecoder;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -22,9 +20,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import static junit.framework.Assert.assertNotNull;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+
 
 /**
  *
@@ -33,6 +29,20 @@ import org.json.simple.parser.JSONParser;
 public class LogXml implements IMetodoLog {
     private FileWriter fw;
     private BufferedWriter bw;
+
+    public LogXml() {
+        if(!new File("log").exists()) {
+            new File("log").mkdir();
+        }
+        File arq = new File("log/log.xml");
+        if(!arq.exists()) {
+            try {
+                arq.createNewFile();
+            } catch (IOException ex) {
+                Logger.getLogger(LogTxt.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
     
     @Override
     public void escreveLog(Log log) {

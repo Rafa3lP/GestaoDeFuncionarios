@@ -14,6 +14,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -25,6 +27,20 @@ public class LogTxt implements IMetodoLog {
     private String logFile;
     private FileWriter fw;
     private BufferedWriter bw;
+
+    public LogTxt() {
+        if(!new File("log").exists()) {
+            new File("log").mkdir();
+        }
+        File arq = new File("log/log.txt");
+        if(!arq.exists()) {
+            try {
+                arq.createNewFile();
+            } catch (IOException ex) {
+                Logger.getLogger(LogTxt.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
     
     @Override
     public void escreveLog(Log log) {
