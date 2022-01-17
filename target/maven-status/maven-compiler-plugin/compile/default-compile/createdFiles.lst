@@ -4,6 +4,7 @@ br\ufes\gestaodefuncionarios\logger\Log.class
 br\ufes\gestaodefuncionarios\logger\LogTxt.class
 br\ufes\gestaodefuncionarios\dao\FuncionarioDAO.class
 br\ufes\gestaodefuncionarios\presenter\Inicializar.class
+br\ufes\gestaodefuncionarios\logger\LogXml$1.class
 br\ufes\gestaodefuncionarios\view\CalcularSalarioView$1.class
 br\ufes\gestaodefuncionarios\components\JnumField$2.class
 br\ufes\gestaodefuncionarios\prop\PropertieManager.class
@@ -17,7 +18,6 @@ br\ufes\gestaodefuncionarios\logger\LogJSON.class
 br\ufes\gestaodefuncionarios\model\BonusGeneroso.class
 br\ufes\gestaodefuncionarios\presenter\ConfigPresenter.class
 br\ufes\gestaodefuncionarios\model\IMetodoCalculoBonus.class
-.netbeans_automatic_build
 br\ufes\gestaodefuncionarios\presenter\CalcularSalarioPresenter.class
 br\ufes\gestaodefuncionarios\presenter\VisualizarFuncionarioPresenter.class
 br\ufes\gestaodefuncionarios\factory\ConnectionFactory.class

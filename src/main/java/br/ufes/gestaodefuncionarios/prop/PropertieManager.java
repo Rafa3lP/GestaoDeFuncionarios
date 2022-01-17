@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 /**
@@ -18,7 +19,7 @@ import java.util.Properties;
 public class PropertieManager {
     private final String CONFIG_FILE = "config.ini";
     
-    public String getPropertie(String key) {
+    public String getProperty(String key) {
         File file = new File(CONFIG_FILE);
         Properties properties = new Properties();
 

@@ -28,9 +28,9 @@ public class PrincipalPresenter {
     public PrincipalPresenter() {
         this.view = new PrincipalView();
         this.propertieManager = new PropertieManager();
-        this.view.getLblVersao().setText(this.propertieManager.getPropertie("version"));
+        this.view.getLblVersao().setText(this.propertieManager.getProperty("version"));
         
-        this.logFormat = this.propertieManager.getPropertie("logFormat");
+        this.logFormat = this.propertieManager.getProperty("logFormat");
         
         this.metodoLog = null;
         

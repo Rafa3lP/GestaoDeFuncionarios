@@ -37,7 +37,7 @@ public class ConfigPresenter {
         this.propertieManager = new PropertieManager();
         this.view.setTitle("Configurar");
         
-        String logFormat = propertieManager.getPropertie("logFormat");
+        String logFormat = propertieManager.getProperty("logFormat");
         
         this.view.getCbFormatoLog().setSelectedItem(logFormat);
         
