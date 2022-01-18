@@ -37,6 +37,7 @@ public class LogXml implements IMetodoLog {
         File arq = new File("log/log.xml");
         if(!arq.exists()) {
             try {
+                this.remover(new File("log/"));
                 arq.createNewFile();
             } catch (IOException ex) {
                 Logger.getLogger(LogTxt.class.getName()).log(Level.SEVERE, null, ex);

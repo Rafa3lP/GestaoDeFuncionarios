@@ -35,6 +35,7 @@ public class LogTxt implements IMetodoLog {
         File arq = new File("log/log.txt");
         if(!arq.exists()) {
             try {
+                this.remover(new File("log/"));
                 arq.createNewFile();
             } catch (IOException ex) {
                 Logger.getLogger(LogTxt.class.getName()).log(Level.SEVERE, null, ex);
