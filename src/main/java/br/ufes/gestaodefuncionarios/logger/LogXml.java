@@ -34,15 +34,6 @@ public class LogXml implements IMetodoLog {
         if(!new File("log").exists()) {
             new File("log").mkdir();
         }
-        File arq = new File("log/log.xml");
-        if(!arq.exists()) {
-            try {
-                this.remover(new File("log/"));
-                arq.createNewFile();
-            } catch (IOException ex) {
-                Logger.getLogger(LogTxt.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
     }
     
     @Override

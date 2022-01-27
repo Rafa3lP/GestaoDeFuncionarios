@@ -9,7 +9,7 @@ import br.ufes.gestaodefuncionarios.logger.IMetodoLog;
 import br.ufes.gestaodefuncionarios.logger.LogJSON;
 import br.ufes.gestaodefuncionarios.logger.LogTxt;
 import br.ufes.gestaodefuncionarios.logger.LogXml;
-import br.ufes.gestaodefuncionarios.prop.PropertieManager;
+import br.ufes.gestaodefuncionarios.prop.PropertyManager;
 import br.ufes.gestaodefuncionarios.view.PrincipalView;
 import javax.swing.JOptionPane;
 
@@ -23,11 +23,11 @@ public class PrincipalPresenter {
     private IMetodoLog metodoLog;
     private PrincipalView view;
     private String logFormat;
-    private PropertieManager propertieManager;
+    private PropertyManager propertieManager;
     
     public PrincipalPresenter() {
         this.view = new PrincipalView();
-        this.propertieManager = new PropertieManager();
+        this.propertieManager = new PropertyManager();
         this.view.getLblVersao().setText(this.propertieManager.getProperty("version"));
         
         this.logFormat = this.propertieManager.getProperty("logFormat");

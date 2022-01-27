@@ -9,7 +9,7 @@ import br.ufes.gestaodefuncionarios.logger.IMetodoLog;
 import br.ufes.gestaodefuncionarios.logger.LogJSON;
 import br.ufes.gestaodefuncionarios.logger.LogTxt;
 import br.ufes.gestaodefuncionarios.logger.LogXml;
-import br.ufes.gestaodefuncionarios.prop.PropertieManager;
+import br.ufes.gestaodefuncionarios.prop.PropertyManager;
 import br.ufes.gestaodefuncionarios.view.ConfigView;
 import br.ufes.gestaodefuncionarios.view.PrincipalView;
 import com.sun.tools.javac.Main;
@@ -27,13 +27,13 @@ public class ConfigPresenter {
     private PrincipalView principalView;
     private ConfigView view;
     private IMetodoLog metodoLog;
-    private PropertieManager propertieManager;
+    private PropertyManager propertieManager;
 
     public ConfigPresenter(PrincipalView principalView, IMetodoLog metodoLog) {
         this.principalView = principalView;
         this.view = new ConfigView();
         this.metodoLog = metodoLog;
-        this.propertieManager = new PropertieManager();
+        this.propertieManager = new PropertyManager();
         this.view.setTitle("Configurar");
         
         String logFormat = propertieManager.getProperty("logFormat");

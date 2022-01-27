@@ -15,7 +15,7 @@ import java.util.Properties;
  *
  * @author Rafael
  */
-public class PropertieManager {
+public class PropertyManager {
     private final String CONFIG_PATH = "config.ini";
     
     public String getProperty(String key) {
