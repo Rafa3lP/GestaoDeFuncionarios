@@ -24,6 +24,7 @@ public class JnumField extends JTextField{
                 jNumFieldKeyTyped(evt);
             }
         });
+        setText("0");
     }
     
     public JnumField(int maxCaracteres) {
@@ -35,17 +36,26 @@ public class JnumField extends JTextField{
                 jNumFieldKeyTyped(evt);
             }
         });
+        setText("0");
     }
     
     private void jNumFieldKeyTyped(KeyEvent evt) {
+        if(getText().isEmpty()) setText("0");
         String caracteres = "0123456789";
         if(type == 0) {
             if(!caracteres.contains(evt.getKeyChar()+"")){
                 evt.consume();
+            }else if(getText().equals("0")) {
+                evt.consume();
+                setText(String.valueOf(evt.getKeyChar()));
             }
         } else {
             try {
                 Double.parseDouble(getText() + evt.getKeyChar());
+                if(getText().equals("0")) {
+                    evt.consume();
+                    setText(Integer.toString(Integer.parseInt(String.valueOf(evt.getKeyChar()))));
+                }
             } catch(NumberFormatException ex) {
                 evt.consume();
             }

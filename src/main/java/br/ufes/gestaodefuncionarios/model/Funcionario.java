@@ -23,13 +23,13 @@ public class Funcionario {
     private Date dtAdmissao;
     private boolean funcionarioMes;
     private int faltas;
-    private ArrayList<Bonus> bonusRecebidos;
+    private int tipoBonus;
 
     public void setFuncionarioMes(boolean funcionarioMes) {
         this.funcionarioMes = funcionarioMes;
     }
 
-    public Funcionario(String nome, int idade, double salarioBase, String cargo, Date dtAdmissao, boolean funcionarioMes, int faltas) {
+    public Funcionario(String nome, int idade, double salarioBase, String cargo, Date dtAdmissao, boolean funcionarioMes, int faltas, int tipoBonus) {
         setNome(nome);
         setIdade(idade);
         setSalarioBase(salarioBase);
@@ -37,10 +37,10 @@ public class Funcionario {
         setDtAdmissao(dtAdmissao);
         setFuncionarioMes(funcionarioMes);
         setFaltas(faltas);
-        bonusRecebidos = new ArrayList<>();
+        setTipoBonus(tipoBonus);
     }
     
-    public Funcionario(int id, String nome, int idade, double salarioBase, String cargo, Date dtAdmissao, boolean funcionarioMes, int faltas) {
+    public Funcionario(int id, String nome, int idade, double salarioBase, String cargo, Date dtAdmissao, boolean funcionarioMes, int faltas, int tipoBonus) {
         this.id = id;
         setNome(nome);
         setIdade(idade);
@@ -49,7 +49,7 @@ public class Funcionario {
         setDtAdmissao(dtAdmissao);
         setFuncionarioMes(funcionarioMes);
         setFaltas(faltas);
-        bonusRecebidos = new ArrayList<>();
+        setTipoBonus(tipoBonus);
     }
     
     @Override
@@ -120,13 +120,20 @@ public class Funcionario {
     public void setSalarioBase(double salarioBase) {
         this.salarioBase = salarioBase;
     }
-    
-    public void addBonus(Bonus bonus) {
-        this.bonusRecebidos.add(bonus);
+
+    public int getTipoBonus() {
+        return tipoBonus;
+    }
+
+    public void setTipoBonus(int tipoBonus) {
+        this.tipoBonus = tipoBonus;
     }
     
-    public void calcularSalario() {
+    public void calcularSalario(ArrayList<IMetodoCalculoBonus> metodosCalculoBonus) {
         setSalario(0);
+        for(IMetodoCalculoBonus mBonus: metodosCalculoBonus) {
+            this.salario += mBonus.calcular(this).getValor();
+        }
     }
     
 }

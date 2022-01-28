@@ -74,12 +74,7 @@ public class BuscarFuncionarioPresenter {
     
     private void buscar() {
         if(this.view.getTxtNome().getText().isEmpty()) {
-            JOptionPane.showMessageDialog(
-                view, 
-                "Digite Algo no campo nome", 
-                "Aviso", 
-                JOptionPane.INFORMATION_MESSAGE
-            );
+            lerTabela();
         } else {
             lerTabelaByNome(view.getTxtNome().getText());
         }

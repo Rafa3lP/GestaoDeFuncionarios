@@ -28,7 +28,7 @@ import java.util.Date;
 public class BonusTempodeServico implements IMetodoCalculoBonus {
 
     @Override
-    public void calcular(Funcionario funcionario) {
+    public Bonus calcular(Funcionario funcionario) {
         double porcentagem;
         LocalDateTime dataAdmissao = funcionario.getDtAdmissao()
                 .toInstant()
@@ -59,9 +59,7 @@ public class BonusTempodeServico implements IMetodoCalculoBonus {
         
         double valorBonus = funcionario.getSalarioBase() * porcentagem;
        
-        funcionario.addBonus(
-            new Bonus("Tempo de Serviço", new Date(), valorBonus)
-        );
+        return new Bonus("Tempo de Serviço", new Date(), valorBonus);
         
     }
     

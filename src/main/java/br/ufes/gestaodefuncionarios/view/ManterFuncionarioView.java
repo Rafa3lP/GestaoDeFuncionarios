@@ -69,8 +69,6 @@ public class ManterFuncionarioView extends javax.swing.JInternalFrame {
 
         cbBonus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<selecione>", "Normal", "Generoso" }));
 
-        txtFaltas.setText("0");
-
         jLabel1.setText("Cargo");
 
         jLabel2.setText("Nome");
@@ -82,14 +80,17 @@ public class ManterFuncionarioView extends javax.swing.JInternalFrame {
         chkFuncionarioMes.setText("Funcionario do mês");
         chkFuncionarioMes.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
-        txtIdade.setText("0");
         txtIdade.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtIdadeActionPerformed(evt);
             }
         });
 
-        txtSalario.setText("0");
+        txtSalario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSalarioActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("Idade");
 
@@ -209,6 +210,10 @@ public class ManterFuncionarioView extends javax.swing.JInternalFrame {
     private void txtIdadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdadeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtIdadeActionPerformed
+
+    private void txtSalarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSalarioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSalarioActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

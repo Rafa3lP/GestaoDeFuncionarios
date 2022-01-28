@@ -22,7 +22,7 @@ import java.util.Date;
 public class BonusAssiduidade implements IMetodoCalculoBonus {
 
     @Override
-    public void calcular(Funcionario funcionario) {
+    public Bonus calcular(Funcionario funcionario) {
        double porcentagem;
        int faltas = funcionario.getFaltas();
        if(faltas >= 6) {
@@ -39,10 +39,8 @@ public class BonusAssiduidade implements IMetodoCalculoBonus {
            }
        }
        double valorBonus = funcionario.getSalarioBase() * porcentagem;
-       
-       funcionario.addBonus(
-            new Bonus("Assiduidade", new Date(), valorBonus)
-       );
+
+       return new Bonus("Assiduidade", new Date(), valorBonus);
        
     }
     

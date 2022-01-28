@@ -36,7 +36,7 @@ public class VisualizarFuncionarioPresenter {
 
             putFuncionario(this.funcionario);
             
-            desabilitaCampos();
+            habilitaCampos(false);
             
             this.view.getBtnFechar().addActionListener((e) -> {
                 fechar();
@@ -89,18 +89,21 @@ public class VisualizarFuncionarioPresenter {
     }
     
     private void editar() {
-        
+        this.view.setTitle("Editar Funcionário");
+        this.view.getBtnExcluir().setEnabled(false);
+        this.view.getBtnSalvar().setEnabled(true);
+        habilitaCampos(true);
     }
     
-    private void desabilitaCampos() {
-        this.view.getTxtNome().setEditable(false);
-        this.view.getTxtFaltas().setEditable(false);
-        this.view.getTxtIdade().setEditable(false);
-        this.view.getTxtSalario().setEditable(false);
-        this.view.getCbBonus().setEnabled(false);
-        this.view.getCbCargo().setEnabled(false);
-        this.view.getDtAdmissao().setEnabled(false);
-        this.view.getDtAdmissao().setEnabled(false);
+    private void habilitaCampos(Boolean flag) {
+        this.view.getTxtNome().setEditable(flag);
+        this.view.getTxtFaltas().setEditable(flag);
+        this.view.getTxtIdade().setEditable(flag);
+        this.view.getTxtSalario().setEditable(flag);
+        this.view.getCbBonus().setEnabled(flag);
+        this.view.getCbCargo().setEnabled(flag);
+        this.view.getDtAdmissao().setEnabled(flag);
+        this.view.getDtAdmissao().setEnabled(flag);
     }
     
     private void putFuncionario(Funcionario funcionario) {
@@ -108,8 +111,8 @@ public class VisualizarFuncionarioPresenter {
         this.view.getTxtFaltas().setText(Integer.toString(funcionario.getFaltas()));
         this.view.getTxtIdade().setText(Integer.toString(funcionario.getIdade()));
         this.view.getTxtSalario().setText(Double.toString(funcionario.getSalarioBase()));
-        this.view.getCbBonus().setSelectedIndex(0);
-        this.view.getCbCargo().setSelectedIndex(0);
+        this.view.getCbBonus().setSelectedIndex(funcionario.getTipoBonus());
+        this.view.getCbCargo().setSelectedItem(funcionario.getCargo());
         this.view.getChkFuncionarioMes().setSelected(funcionario.isFuncionarioMes());
         this.view.getDtAdmissao().setDate(funcionario.getDtAdmissao());
     }

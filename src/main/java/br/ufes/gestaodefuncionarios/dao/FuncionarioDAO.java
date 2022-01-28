@@ -46,7 +46,8 @@ public class FuncionarioDAO {
                 + "cargo VARCHAR NOT NULL, "
                 + "admissao DATE NOT NULL, "
                 + "funcionarioMes BOOLEAN NOT NULL,"
-                + "faltas INTEGER NOT NULL"
+                + "faltas INTEGER NOT NULL,"
+                + "tipoBonus INTEGER NOT NULL"
                 + ")";
         
         Connection con = null;
@@ -74,8 +75,9 @@ public class FuncionarioDAO {
                 + "cargo, "
                 + "admissao, "
                 + "funcionarioMes, "
-                + "faltas"
-                + ") VALUES(?,?,?,?,?,?,?)";
+                + "faltas,"
+                + "tipoBonus"
+                + ") VALUES(?,?,?,?,?,?,?,?)";
         
         Connection con = null;
         PreparedStatement pst = null;
@@ -89,6 +91,7 @@ public class FuncionarioDAO {
             pst.setDate(5, new java.sql.Date(funcionario.getDtAdmissao().getTime()));
             pst.setBoolean(6, funcionario.isFuncionarioMes());
             pst.setInt(7, funcionario.getFaltas());
+            pst.setInt(8, funcionario.getTipoBonus());
             pst.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -119,7 +122,8 @@ public class FuncionarioDAO {
                 Date dtAdmissao = resultSet.getDate("admissao");
                 boolean funcionarioMes = resultSet.getBoolean("funcionarioMes");
                 int faltas = resultSet.getInt("faltas");
-                funcionario = new Funcionario(id, nome, idade, salarioBase, cargo, dtAdmissao, funcionarioMes, faltas);
+                int tipoBonus = resultSet.getInt("tipoBonus");
+                funcionario = new Funcionario(id, nome, idade, salarioBase, cargo, dtAdmissao, funcionarioMes, faltas, tipoBonus);
                 funcionarios.add(funcionario);
             }
         } catch(SQLException ex) {
@@ -152,7 +156,8 @@ public class FuncionarioDAO {
             Date dtAdmissao = resultSet.getDate("admissao");
             boolean funcionarioMes = resultSet.getBoolean("funcionarioMes");
             int faltas = resultSet.getInt("faltas");
-            funcionario = new Funcionario(id, nome, idade, salarioBase, cargo, dtAdmissao, funcionarioMes, faltas);
+            int tipoBonus = resultSet.getInt("tipoBonus");
+            funcionario = new Funcionario(id, nome, idade, salarioBase, cargo, dtAdmissao, funcionarioMes, faltas, tipoBonus);
             
         } catch(SQLException ex) {
             //Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -186,7 +191,8 @@ public class FuncionarioDAO {
                 Date dtAdmissao = resultSet.getDate("admissao");
                 boolean funcionarioMes = resultSet.getBoolean("funcionarioMes");
                 int faltas = resultSet.getInt("faltas");
-                funcionario = new Funcionario(id, nome, idade, salarioBase, cargo, dtAdmissao, funcionarioMes, faltas);
+                int tipoBonus = resultSet.getInt("tipoBonus");
+                funcionario = new Funcionario(id, nome, idade, salarioBase, cargo, dtAdmissao, funcionarioMes, faltas, tipoBonus);
                 funcionarios.add(funcionario);
             }
         } catch(SQLException ex) {
@@ -224,7 +230,8 @@ public class FuncionarioDAO {
                 + "cargo = ?, "
                 + "admissao = ?, "
                 + "funcionarioMes = ?, "
-                + "faltas = ? "
+                + "faltas = ?,"
+                + "tipoBonus = ? "
                 + "WHERE id = ?";
         
         Connection con = null;
@@ -239,7 +246,8 @@ public class FuncionarioDAO {
             pst.setDate(5, new java.sql.Date(funcionario.getDtAdmissao().getTime()));
             pst.setBoolean(6, funcionario.isFuncionarioMes());
             pst.setInt(7, funcionario.getFaltas());
-            pst.setInt(8, funcionario.getId());
+            pst.setInt(8, funcionario.getTipoBonus());
+            pst.setInt(9, funcionario.getId());
             pst.executeUpdate();
         } catch (SQLException ex) { 
             Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);

@@ -167,9 +167,6 @@
           </AuxValues>
         </Component>
         <Component class="br.ufes.gestaodefuncionarios.components.JnumField" name="txtFaltas">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="0"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
@@ -198,17 +195,14 @@
           </Properties>
         </Component>
         <Component class="br.ufes.gestaodefuncionarios.components.JnumField" name="txtIdade">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="0"/>
-          </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtIdadeActionPerformed"/>
           </Events>
         </Component>
         <Component class="br.ufes.gestaodefuncionarios.components.JnumField" name="txtSalario">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="0"/>
-          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtSalarioActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>

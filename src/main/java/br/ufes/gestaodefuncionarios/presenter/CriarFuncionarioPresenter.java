@@ -16,6 +16,7 @@ import br.ufes.gestaodefuncionarios.view.PrincipalView;
 import java.io.IOException;
 import java.util.Date;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -77,9 +78,9 @@ public class CriarFuncionarioPresenter {
     
     private void limparCampos() {
         view.getTxtNome().setText("");
-        view.getTxtIdade().setText("");
-        view.getTxtFaltas().setText("");
-        view.getTxtSalario().setText("");
+        view.getTxtIdade().setText("0");
+        view.getTxtFaltas().setText("0");
+        view.getTxtSalario().setText("0");
         view.getCbCargo().setSelectedIndex(0);
         view.getCbBonus().setSelectedIndex(0);
         view.getChkFuncionarioMes().setSelected(false);
@@ -105,17 +106,25 @@ public class CriarFuncionarioPresenter {
         } else if(cargo.equals("<selecione>")) {
             throw new IOException("Selecione um cargo válido");
         } else {
-            Funcionario novoFuncionario = new Funcionario(nome, idade, salario, cargo, dtAdmissao, funcionarioMes, faltas);
             int bonus = view.getCbBonus().getSelectedIndex();
+            Funcionario novoFuncionario = null;
             switch(bonus) {
                 case 0:
                     throw new IOException("Selecione um bonus válido");
                 case 1:
-                    new BonusNormal().calcular(novoFuncionario);
-                    break;
                 case 2:
-                    new BonusGeneroso().calcular(novoFuncionario);
+                    novoFuncionario = new Funcionario(
+                        nome, 
+                        idade, 
+                        salario, 
+                        cargo, 
+                        dtAdmissao, 
+                        funcionarioMes, 
+                        faltas, 
+                        bonus
+                    );
                     break;
+                    
                 default:
                     throw new IOException("O bônus selecionado é desconhecido");
             }

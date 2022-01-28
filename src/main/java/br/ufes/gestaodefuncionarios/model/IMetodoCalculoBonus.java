@@ -10,5 +10,5 @@ package br.ufes.gestaodefuncionarios.model;
  * @author Rafael
  */
 public interface IMetodoCalculoBonus {
-    void calcular(Funcionario funcionario);
+    Bonus calcular(Funcionario funcionario);
 }
