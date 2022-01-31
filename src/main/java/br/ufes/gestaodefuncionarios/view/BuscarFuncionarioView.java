@@ -42,6 +42,8 @@ public class BuscarFuncionarioView extends javax.swing.JInternalFrame {
         btnFechar = new javax.swing.JButton();
         btnVisualizar = new javax.swing.JButton();
 
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+
         jLabel1.setText("Nome");
 
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/search-24.png"))); // NOI18N
@@ -114,7 +116,7 @@ public class BuscarFuncionarioView extends javax.swing.JInternalFrame {
                     .addComponent(btnBuscar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnVerBonus)
                     .addComponent(btnVisualizar)

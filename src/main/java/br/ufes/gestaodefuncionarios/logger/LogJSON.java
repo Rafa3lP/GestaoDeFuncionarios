@@ -35,6 +35,14 @@ public class LogJSON implements IMetodoLog {
         if(!new File("log").exists()) {
             new File("log").mkdir();
         }
+        File arq = new File("log/log.json");
+        if(!arq.exists()) {
+            try {
+                arq.createNewFile();
+            } catch (IOException ex) {
+                Logger.getLogger(LogTxt.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     @Override

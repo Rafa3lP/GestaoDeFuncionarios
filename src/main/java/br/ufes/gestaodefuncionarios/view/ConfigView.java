@@ -35,6 +35,8 @@ public class ConfigView extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         btnOk = new javax.swing.JButton();
 
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+
         cbFormatoLog.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "txt", "json", "xml" }));
 
         jLabel1.setText("Formato de log");
@@ -52,7 +54,7 @@ public class ConfigView extends javax.swing.JInternalFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(cbFormatoLog, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(94, Short.MAX_VALUE))
+                .addContainerGap(108, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnOk)
@@ -65,7 +67,7 @@ public class ConfigView extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(cbFormatoLog, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
                 .addComponent(btnOk)
                 .addContainerGap())
         );
@@ -81,7 +83,7 @@ public class ConfigView extends javax.swing.JInternalFrame {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        pack();
+        setBounds(0, 0, 364, 146);
     }// </editor-fold>//GEN-END:initComponents
 
 

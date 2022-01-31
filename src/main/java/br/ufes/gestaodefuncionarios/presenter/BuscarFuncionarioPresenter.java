@@ -9,7 +9,6 @@ import br.ufes.gestaodefuncionarios.dao.FuncionarioDAO;
 import br.ufes.gestaodefuncionarios.logger.IMetodoLog;
 import br.ufes.gestaodefuncionarios.model.Funcionario;
 import br.ufes.gestaodefuncionarios.view.BuscarFuncionarioView;
-import br.ufes.gestaodefuncionarios.view.PrincipalView;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -20,13 +19,13 @@ import javax.swing.table.DefaultTableModel;
  */
 public class BuscarFuncionarioPresenter {
     private JTable tabela;
-    private PrincipalView principalView;
+    private PrincipalPresenter principalPresenter;
     private BuscarFuncionarioView view;
     private IMetodoLog metodoLog;
 
-    public BuscarFuncionarioPresenter(PrincipalView principalView, IMetodoLog metodoLog) {
+    public BuscarFuncionarioPresenter(PrincipalPresenter principalPresenter, IMetodoLog metodoLog) {
         this.metodoLog = metodoLog;
-        this.principalView = principalView;
+        this.principalPresenter = principalPresenter;
         this.view = new BuscarFuncionarioView();
         this.view.setTitle("Buscar Funcionário");
         this.tabela = this.view.getTFuncionarios();
@@ -53,7 +52,7 @@ public class BuscarFuncionarioPresenter {
                     habilitarBotoes(false);
                 }
             });
-            this.principalView.getDesktopPane().add(this.view);
+            this.principalPresenter.addToDesktopPane(this.view);
             this.view.setVisible(true);
         } catch(RuntimeException ex) {
             JOptionPane.showMessageDialog(
@@ -68,7 +67,7 @@ public class BuscarFuncionarioPresenter {
     }
     
     private void novo() {
-        new CriarFuncionarioPresenter(this.principalView, this.metodoLog);
+        new CriarFuncionarioPresenter(this.principalPresenter, this.metodoLog);
         this.view.dispose();
     }
     
@@ -83,7 +82,7 @@ public class BuscarFuncionarioPresenter {
     private void visualizar() {
         new VisualizarFuncionarioPresenter(
                 Integer.parseInt(this.tabela.getValueAt(this.tabela.getSelectedRow(), 0).toString()), 
-                principalView,
+                principalPresenter,
                 this.metodoLog
         );
     }

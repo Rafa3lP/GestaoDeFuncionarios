@@ -8,6 +8,7 @@ Discente: Rafael de Andrade Prenholato
 ```bash
 mvn clean package
 ```
+O jar será gerado em target/dist
 ## Mecanismo de persistência
 O sistema utiliza um banco de dados SQLite como mecanismo de persistencia
 

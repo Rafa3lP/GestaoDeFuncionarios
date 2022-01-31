@@ -26,7 +26,7 @@ public class ManterFuncionarioView extends javax.swing.JInternalFrame {
         initComponents();
         dtAdmissao = new JDateChooser("dd/MM/yyyy", "##/##/####", '_');
         dtAdmissao.setDate(new Date());
-        dtAdmissao.setBounds(440, 135, 124, 22);
+        dtAdmissao.setBounds(397, 120, 124, 22);
         dtAdmissao.setMaxSelectableDate(new Date());
         
         this.jPanel1.add(dtAdmissao);
@@ -64,6 +64,8 @@ public class ManterFuncionarioView extends javax.swing.JInternalFrame {
         btnExcluir = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
         btnSalvar = new javax.swing.JButton();
+
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         cbCargo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<selecione>", "Estagiário", "Vendedor" }));
 
@@ -144,7 +146,7 @@ public class ManterFuncionarioView extends javax.swing.JInternalFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(txtSalario, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
                                     .addComponent(txtIdade, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(0, 23, Short.MAX_VALUE))))
+                                .addGap(0, 37, Short.MAX_VALUE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(btnFechar)
@@ -182,7 +184,7 @@ public class ManterFuncionarioView extends javax.swing.JInternalFrame {
                         .addComponent(jLabel4)
                         .addComponent(chkFuncionarioMes))
                     .addComponent(jLabel7))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnFechar)
                     .addComponent(btnExcluir)

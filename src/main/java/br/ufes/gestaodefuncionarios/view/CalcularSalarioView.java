@@ -26,7 +26,7 @@ public class CalcularSalarioView extends javax.swing.JInternalFrame {
         dtCalculo.setDate(new Date());
         dtCalculo.setMaxSelectableDate(new Date());
   
-        dtCalculo.setBounds(435, 337, 122, 22);
+        dtCalculo.setBounds(415, 340, 122, 22);
       
         this.jPanel1.add(dtCalculo);
     }
@@ -47,6 +47,8 @@ public class CalcularSalarioView extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tSalario = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
+
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         btnListar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/synchronize-24.png"))); // NOI18N
         btnListar.setText("Listar todos");
@@ -81,31 +83,31 @@ public class CalcularSalarioView extends javax.swing.JInternalFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addGap(149, 555, Short.MAX_VALUE)
+                        .addComponent(btnListar))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(btnFechar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 212, Short.MAX_VALUE)
-                        .addComponent(jLabel1)
-                        .addGap(159, 159, 159)
-                        .addComponent(btnCalcular))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(149, 541, Short.MAX_VALUE)
-                        .addComponent(btnListar)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane1)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnFechar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 234, Short.MAX_VALUE)
+                                .addComponent(jLabel1)
+                                .addGap(159, 159, 159)
+                                .addComponent(btnCalcular)))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(7, 7, 7)
                 .addComponent(btnListar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnFechar)
                     .addComponent(btnCalcular)

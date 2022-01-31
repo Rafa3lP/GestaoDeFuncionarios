@@ -10,7 +10,6 @@ import br.ufes.gestaodefuncionarios.logger.IMetodoLog;
 import br.ufes.gestaodefuncionarios.logger.Log;
 import br.ufes.gestaodefuncionarios.model.Funcionario;
 import br.ufes.gestaodefuncionarios.view.ManterFuncionarioView;
-import br.ufes.gestaodefuncionarios.view.PrincipalView;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,14 +18,14 @@ import javax.swing.JOptionPane;
  */
 public class VisualizarFuncionarioPresenter {
     private ManterFuncionarioView view;
-    private PrincipalView principalView;
+    private PrincipalPresenter principalPresenter;
     private Funcionario funcionario;
     private IMetodoLog metodoLog;
 
-    public VisualizarFuncionarioPresenter(int idFuncionario, PrincipalView principalView, IMetodoLog metodoLog) {
+    public VisualizarFuncionarioPresenter(int idFuncionario, PrincipalPresenter principalPresenter, IMetodoLog metodoLog) {
         this.metodoLog = metodoLog;
         FuncionarioDAO fDao = new FuncionarioDAO();
-        this.principalView = principalView;
+        this.principalPresenter = principalPresenter;
         this.view = new ManterFuncionarioView();
         this.view.setTitle("Visualizar Funcionário");
         this.view.getBtnSalvar().setEnabled(false);
@@ -51,7 +50,7 @@ public class VisualizarFuncionarioPresenter {
                 this.view.getChkFuncionarioMes().setSelected(funcionario.isFuncionarioMes());
             });
 
-            principalView.getDesktopPane().add(view);
+            principalPresenter.addToDesktopPane(view);
             this.view.setVisible(true);
             
         } catch(RuntimeException ex) {
@@ -79,6 +78,7 @@ public class VisualizarFuncionarioPresenter {
             try {
                 dao.deletar(this.funcionario);
                 this.metodoLog.escreveLog(new Log(IMetodoLog.LOG_INFORMATION, "Funcionario " + this.funcionario.getNome() + " removido"));
+                this.principalPresenter.atualizaNumFuncionarios();
                 fechar();
             } catch(RuntimeException ex) {
                 JOptionPane.showMessageDialog(view, ex.getMessage(), "erro", JOptionPane.ERROR_MESSAGE);

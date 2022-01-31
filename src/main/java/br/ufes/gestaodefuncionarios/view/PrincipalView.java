@@ -79,7 +79,6 @@ public class PrincipalView extends javax.swing.JFrame {
         jLabel1.setLabelFor(lblVersao);
 
         lblVersao.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        lblVersao.setForeground(new java.awt.Color(0, 0, 0));
         lblVersao.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblVersao.setText("0");
 
@@ -87,7 +86,6 @@ public class PrincipalView extends javax.swing.JFrame {
         jLabel2.setLabelFor(lblNumFuncionarios);
 
         lblNumFuncionarios.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        lblNumFuncionarios.setForeground(new java.awt.Color(0, 0, 0));
         lblNumFuncionarios.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblNumFuncionarios.setText("0");
 

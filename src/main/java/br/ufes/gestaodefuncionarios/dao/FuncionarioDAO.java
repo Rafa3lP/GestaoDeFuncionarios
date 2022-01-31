@@ -257,4 +257,26 @@ public class FuncionarioDAO {
         }
     }
     
+    public int getFuncionarioCount() {
+        String sql = "SELECT COUNT(*) AS rowcount FROM funcionario";
+        int count = 0;
+        Connection con = null;
+        PreparedStatement pst = null;
+        ResultSet resultSet = null;
+        try {
+            con = ConnectionFactory.getConnection();
+            pst = con.prepareStatement(sql);
+            resultSet = pst.executeQuery();
+            resultSet.next();
+            count = resultSet.getInt("rowcount");
+        } catch (SQLException ex) {
+            Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Falha ao obter numero de funcionarios no banco", ex);
+        } finally {
+            ConnectionFactory.closeConnection(con, pst, resultSet);
+        }
+        
+        return count;
+    }
+    
 }

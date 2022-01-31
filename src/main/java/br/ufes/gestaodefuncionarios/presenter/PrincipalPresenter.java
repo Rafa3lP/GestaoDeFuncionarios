@@ -5,12 +5,15 @@
  */
 package br.ufes.gestaodefuncionarios.presenter;
 
+import br.ufes.gestaodefuncionarios.dao.FuncionarioDAO;
 import br.ufes.gestaodefuncionarios.logger.IMetodoLog;
+import br.ufes.gestaodefuncionarios.logger.Log;
 import br.ufes.gestaodefuncionarios.logger.LogJSON;
 import br.ufes.gestaodefuncionarios.logger.LogTxt;
 import br.ufes.gestaodefuncionarios.logger.LogXml;
 import br.ufes.gestaodefuncionarios.prop.PropertyManager;
 import br.ufes.gestaodefuncionarios.view.PrincipalView;
+import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -70,6 +73,8 @@ public class PrincipalPresenter {
             configuracoes();
         });
         
+        this.atualizaNumFuncionarios();
+        
         this.view.setVisible(true);
 
     }
@@ -79,19 +84,35 @@ public class PrincipalPresenter {
     }
     
     private void criarFuncionario() {
-        new CriarFuncionarioPresenter(this.view, this.metodoLog);
+        new CriarFuncionarioPresenter(this, this.metodoLog);
     }
     
     private void buscarFuncionario() {
-        new BuscarFuncionarioPresenter(this.view, this.metodoLog);
+        new BuscarFuncionarioPresenter(this, this.metodoLog);
     }
     
     private void calcularSalario() {
-        new CalcularSalarioPresenter(this.view, this.metodoLog);
+        new CalcularSalarioPresenter(this, this.metodoLog);
     }
     
     private void configuracoes() {
-        new ConfigPresenter(this.view, this.metodoLog);
+        new ConfigPresenter(this, this.metodoLog);
+    }
+    
+    public void addToDesktopPane(JInternalFrame frame) {
+        this.view.getDesktopPane().add(frame);
+    }
+    
+    public void atualizaNumFuncionarios() {
+        try {
+            FuncionarioDAO fDao = new FuncionarioDAO();
+            int count = fDao.getFuncionarioCount();
+            this.view.getLblNumFuncionarios().setText(Integer.toString(count)); 
+        } catch(RuntimeException ex) {
+            JOptionPane.showMessageDialog(view, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            this.metodoLog.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao executar operação - " + ex.getMessage()));
+        }
+        
     }
     
 }

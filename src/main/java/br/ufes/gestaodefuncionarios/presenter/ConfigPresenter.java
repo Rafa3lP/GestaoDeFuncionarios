@@ -11,12 +11,15 @@ import br.ufes.gestaodefuncionarios.logger.LogTxt;
 import br.ufes.gestaodefuncionarios.logger.LogXml;
 import br.ufes.gestaodefuncionarios.prop.PropertyManager;
 import br.ufes.gestaodefuncionarios.view.ConfigView;
-import br.ufes.gestaodefuncionarios.view.PrincipalView;
 import com.sun.tools.javac.Main;
+import java.io.File;
 import java.io.IOException;
+import java.lang.management.ManagementFactory;
 import java.net.URL;
 import java.security.CodeSource;
 import java.security.ProtectionDomain;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -24,13 +27,13 @@ import javax.swing.JOptionPane;
  * @author Rafael
  */
 public class ConfigPresenter {
-    private PrincipalView principalView;
+    private PrincipalPresenter principalPresenter;
     private ConfigView view;
     private IMetodoLog metodoLog;
     private PropertyManager propertieManager;
 
-    public ConfigPresenter(PrincipalView principalView, IMetodoLog metodoLog) {
-        this.principalView = principalView;
+    public ConfigPresenter(PrincipalPresenter principalPresenter, IMetodoLog metodoLog) {
+        this.principalPresenter = principalPresenter;
         this.view = new ConfigView();
         this.metodoLog = metodoLog;
         this.propertieManager = new PropertyManager();
@@ -58,7 +61,7 @@ public class ConfigPresenter {
             fechar();
         });
         
-        this.principalView.getDesktopPane().add(this.view);
+        this.principalPresenter.addToDesktopPane(this.view);
         this.view.setVisible(true);
     }
     
@@ -68,7 +71,7 @@ public class ConfigPresenter {
     
     private void setLogFormat(String logFormat) {
         int resposta = JOptionPane.showConfirmDialog(
-                view, 
+                null, 
                 "Deseja realmente alterar o formato de log?\n(Reinicialização necessaria)", 
                 "Confirmação", 
                 JOptionPane.YES_NO_OPTION
@@ -86,27 +89,26 @@ public class ConfigPresenter {
             }
             newMetodoLog.migraLog(this.metodoLog);
             propertieManager.setProp("logFormat", logFormat);
-            //restart();
+            restart();
         }  
         fechar();
         
     }
     
-    private void restart() {
-        Class cls = Main.class;
-        ProtectionDomain pDomain = cls.getProtectionDomain();
-        CodeSource cSource = pDomain.getCodeSource();
-        URL loc = cSource.getLocation();
-        JOptionPane.showMessageDialog(null, loc.toString().substring(5));
-
-        String comando = "java -jar " + loc.toString().substring(5);
-        JOptionPane.showMessageDialog(null, comando);
+    public static void restart() {
         try {
-            Process Processo = Runtime.getRuntime().exec(comando);
-        } catch ( IOException MensagemdeErro ) {
-            System.out.println(MensagemdeErro);
+            
+            StringBuilder cmd = new StringBuilder();
+            cmd.append(System.getProperty("java.home") + File.separator + "bin" + File.separator + "java ");
+            
+            cmd.append("-jar ").append(ManagementFactory.getRuntimeMXBean().getClassPath()).append(" ");
+          
+            Runtime.getRuntime().exec(cmd.toString());
+            System.out.println("Executar comando: \n " + cmd.toString());
+            System.exit(0);
+        } catch (IOException ex) {
+            Logger.getLogger(Inicializar.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.exit(0);
     }
     
 }

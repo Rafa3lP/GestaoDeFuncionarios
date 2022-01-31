@@ -12,7 +12,6 @@ import br.ufes.gestaodefuncionarios.model.BonusGeneroso;
 import br.ufes.gestaodefuncionarios.model.BonusNormal;
 import br.ufes.gestaodefuncionarios.model.Funcionario;
 import br.ufes.gestaodefuncionarios.view.ManterFuncionarioView;
-import br.ufes.gestaodefuncionarios.view.PrincipalView;
 import java.io.IOException;
 import java.util.Date;
 import javax.swing.JOptionPane;
@@ -25,13 +24,13 @@ import javax.swing.table.DefaultTableModel;
 public class CriarFuncionarioPresenter {
     private FuncionarioDAO dao;
     private ManterFuncionarioView view;
-    private PrincipalView principalView;
+    private PrincipalPresenter principalPresenter;
     private IMetodoLog metodoLog;
 
-    public CriarFuncionarioPresenter(PrincipalView principalView, IMetodoLog metodoLog) {
+    public CriarFuncionarioPresenter(PrincipalPresenter principalPresenter, IMetodoLog metodoLog) {
         this.metodoLog = metodoLog;
         this.view = new ManterFuncionarioView();
-        this.principalView = principalView;
+        this.principalPresenter = principalPresenter;
         this.view.setTitle("Novo Funcionário");
         this.view.getBtnExcluir().setVisible(false);
         this.view.getBtnEditar().setVisible(false);
@@ -42,7 +41,7 @@ public class CriarFuncionarioPresenter {
         this.view.getBtnSalvar().addActionListener((e) -> {
             salvar();
         });
-        this.principalView.getDesktopPane().add(view);
+        this.principalPresenter.addToDesktopPane(view);
         this.view.setVisible(true);
     }
     private void fechar() {
@@ -66,6 +65,8 @@ public class CriarFuncionarioPresenter {
             this.metodoLog.escreveLog(new Log(IMetodoLog.LOG_INFORMATION, "Funcionario " + novoFuncionario.getNome() + " adicionado"));
             
             limparCampos();
+            
+            this.principalPresenter.atualizaNumFuncionarios();
             
         } catch(RuntimeException ex) {
             JOptionPane.showMessageDialog(view, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);

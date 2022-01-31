@@ -7,7 +7,6 @@ package br.ufes.gestaodefuncionarios.presenter;
 
 import br.ufes.gestaodefuncionarios.logger.IMetodoLog;
 import br.ufes.gestaodefuncionarios.view.CalcularSalarioView;
-import br.ufes.gestaodefuncionarios.view.PrincipalView;
 
 /**
  *
@@ -15,12 +14,12 @@ import br.ufes.gestaodefuncionarios.view.PrincipalView;
  */
 public class CalcularSalarioPresenter {
     private CalcularSalarioView view;
-    private PrincipalView principalView;
+    private PrincipalPresenter principalPresenter;
     private IMetodoLog metodoLog;
 
-    public CalcularSalarioPresenter(PrincipalView principalView, IMetodoLog metodoLog) {
+    public CalcularSalarioPresenter(PrincipalPresenter principalPresenter, IMetodoLog metodoLog) {
         this.metodoLog = metodoLog;
-        this.principalView = principalView;
+        this.principalPresenter = principalPresenter;
         this.view = new CalcularSalarioView();
         this.view.setTitle("Calcular Salário");
         
@@ -28,7 +27,7 @@ public class CalcularSalarioPresenter {
             fechar();
         });
         
-        this.principalView.getDesktopPane().add(this.view);
+        this.principalPresenter.addToDesktopPane(this.view);
         this.view.setVisible(true);
 
     }
