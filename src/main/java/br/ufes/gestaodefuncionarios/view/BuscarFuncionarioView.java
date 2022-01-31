@@ -42,7 +42,7 @@ public class BuscarFuncionarioView extends javax.swing.JInternalFrame {
         btnFechar = new javax.swing.JButton();
         btnVisualizar = new javax.swing.JButton();
 
-        setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel1.setText("Nome");
 

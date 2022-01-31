@@ -65,11 +65,16 @@ public class ManterFuncionarioView extends javax.swing.JInternalFrame {
         btnEditar = new javax.swing.JButton();
         btnSalvar = new javax.swing.JButton();
 
-        setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         cbCargo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<selecione>", "Estagiário", "Vendedor" }));
 
         cbBonus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<selecione>", "Normal", "Generoso" }));
+        cbBonus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbBonusActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Cargo");
 
@@ -217,6 +222,10 @@ public class ManterFuncionarioView extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSalarioActionPerformed
 
+    private void cbBonusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbBonusActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbBonusActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEditar;
@@ -240,6 +249,18 @@ public class ManterFuncionarioView extends javax.swing.JInternalFrame {
     private br.ufes.gestaodefuncionarios.components.JnumField txtSalario;
     // End of variables declaration//GEN-END:variables
 
+     public void habilitaCampos(Boolean flag) {
+        getTxtNome().setEditable(flag);
+        getTxtFaltas().setEditable(flag);
+        getTxtIdade().setEditable(flag);
+        getTxtSalario().setEditable(flag);
+        getCbBonus().setEnabled(flag);
+        getCbCargo().setEnabled(flag);
+        getDtAdmissao().setEnabled(flag);
+        getDtAdmissao().setEnabled(flag);
+        getChkFuncionarioMes().setEnabled(flag);
+    }
+    
     public JDateChooser getDtAdmissao() {
         return dtAdmissao;
     }

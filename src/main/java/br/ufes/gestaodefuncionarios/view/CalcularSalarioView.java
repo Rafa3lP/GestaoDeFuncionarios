@@ -26,7 +26,7 @@ public class CalcularSalarioView extends javax.swing.JInternalFrame {
         dtCalculo.setDate(new Date());
         dtCalculo.setMaxSelectableDate(new Date());
   
-        dtCalculo.setBounds(415, 340, 122, 22);
+        dtCalculo.setBounds(420, 342, 122, 22);
       
         this.jPanel1.add(dtCalculo);
     }
@@ -48,7 +48,7 @@ public class CalcularSalarioView extends javax.swing.JInternalFrame {
         tSalario = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
 
-        setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         btnListar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/synchronize-24.png"))); // NOI18N
         btnListar.setText("Listar todos");
@@ -64,11 +64,11 @@ public class CalcularSalarioView extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Fucnionário", "Data", "Salário Base (R$)", "Bônus (R$)", "Salário (R$)"
+                "Id", "Fucnionário", "Data", "Salário Base (R$)", "Bônus (R$)", "Salário (R$)"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -157,7 +157,7 @@ public class CalcularSalarioView extends javax.swing.JInternalFrame {
         return btnListar;
     }
 
-    public JTable gettSalario() {
+    public JTable getTSalario() {
         return tSalario;
     }
 }

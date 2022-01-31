@@ -35,7 +35,7 @@ public class ConfigView extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         btnOk = new javax.swing.JButton();
 
-        setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         cbFormatoLog.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "txt", "json", "xml" }));
 

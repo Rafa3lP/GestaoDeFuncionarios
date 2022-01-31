@@ -56,7 +56,7 @@ public class PrincipalView extends javax.swing.JFrame {
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        desktopPane.setBackground(new java.awt.Color(89, 118, 124));
+        desktopPane.setBackground(new java.awt.Color(164, 214, 191));
 
         javax.swing.GroupLayout desktopPaneLayout = new javax.swing.GroupLayout(desktopPane);
         desktopPane.setLayout(desktopPaneLayout);
@@ -96,7 +96,7 @@ public class PrincipalView extends javax.swing.JFrame {
         pInferiorLayout.setHorizontalGroup(
             pInferiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pInferiorLayout.createSequentialGroup()
-                .addContainerGap(10, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblVersao, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
@@ -111,7 +111,7 @@ public class PrincipalView extends javax.swing.JFrame {
         pInferiorLayout.setVerticalGroup(
             pInferiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pInferiorLayout.createSequentialGroup()
-                .addContainerGap(14, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(pInferiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pInferiorLayout.createSequentialGroup()
                         .addGroup(pInferiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

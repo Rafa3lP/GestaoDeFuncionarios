@@ -33,6 +33,7 @@ public class BuscarFuncionarioPresenter {
         try {
             lerTabela();
             habilitarBotoes(false);
+            
             this.view.getBtnFechar().addActionListener((e) -> {
                 fechar();
             });
