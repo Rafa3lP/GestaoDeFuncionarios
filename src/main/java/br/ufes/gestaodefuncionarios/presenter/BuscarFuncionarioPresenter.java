@@ -7,6 +7,7 @@ package br.ufes.gestaodefuncionarios.presenter;
 
 import br.ufes.gestaodefuncionarios.dao.FuncionarioDAO;
 import br.ufes.gestaodefuncionarios.logger.IMetodoLog;
+import br.ufes.gestaodefuncionarios.logger.Log;
 import br.ufes.gestaodefuncionarios.model.Funcionario;
 import br.ufes.gestaodefuncionarios.view.BuscarFuncionarioView;
 import javax.swing.JOptionPane;
@@ -45,6 +46,9 @@ public class BuscarFuncionarioPresenter {
             });
             this.view.getBtnVisualizar().addActionListener((e) -> {
                 visualizar();
+            });
+            this.view.getBtnVerBonus().addActionListener((e) -> {
+                verBonus();
             });
             this.tabela.getSelectionModel().addListSelectionListener((e) -> {
                 if(tabela.getSelectedRow() != -1) {
@@ -88,42 +92,76 @@ public class BuscarFuncionarioPresenter {
         );
     }
     
+    private void verBonus() {
+        try {
+            FuncionarioDAO fDao = new FuncionarioDAO();
+            Funcionario funcionario;
+            funcionario = fDao.getFuncionarioById(
+                Integer.parseInt(
+                    this.tabela.getValueAt(
+                        this.tabela.getSelectedRow(), 0
+                    )
+                    .toString()
+                )
+            );
+
+            new VerBonusPresenter(true, funcionario);
+        } catch(RuntimeException ex) {
+            JOptionPane.showMessageDialog(this.view, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            metodoLog.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao realizar operação - " + ex.getMessage()));
+        }
+        
+        
+    }
+    
     private void fechar() {
         this.view.dispose();
     }
     
     private void lerTabela() throws RuntimeException {
-        DefaultTableModel modelo = (DefaultTableModel) this.tabela.getModel();
-        modelo.setNumRows(0);
-        
-        FuncionarioDAO fDao = new FuncionarioDAO();
+        try {
+            DefaultTableModel modelo = (DefaultTableModel) this.tabela.getModel();
+            modelo.setNumRows(0);
 
-        for(Funcionario f: fDao.getFuncionarios()) {
-            modelo.addRow(new Object[]{
-                f.getId(),
-                f.getNome(),
-                f.getIdade(),
-                f.getCargo(),
-                f.getSalarioBase()
-            });
+            FuncionarioDAO fDao = new FuncionarioDAO();
+
+            for(Funcionario f: fDao.getFuncionarios()) {
+                modelo.addRow(new Object[]{
+                    f.getId(),
+                    f.getNome(),
+                    f.getIdade(),
+                    f.getCargo(),
+                    f.getSalarioBase()
+                });
+            }
+        } catch(RuntimeException ex) {
+            JOptionPane.showMessageDialog(this.view, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            metodoLog.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao realizar operação - " + ex.getMessage()));
         }
-        
+ 
     }
     
     private void lerTabelaByNome(String nome) {
         DefaultTableModel modelo = (DefaultTableModel) this.tabela.getModel();
         modelo.setNumRows(0);
-        FuncionarioDAO fDao = new FuncionarioDAO();
         
-        for(Funcionario f: fDao.getFuncionariosByNome(nome)) {
-            modelo.addRow(new Object[]{
-                f.getId(),
-                f.getNome(),
-                f.getIdade(),
-                f.getCargo(),
-                f.getSalarioBase()
-            });
+        try {
+            FuncionarioDAO fDao = new FuncionarioDAO();
+        
+            for(Funcionario f: fDao.getFuncionariosByNome(nome)) {
+                modelo.addRow(new Object[]{
+                    f.getId(),
+                    f.getNome(),
+                    f.getIdade(),
+                    f.getCargo(),
+                    f.getSalarioBase()
+                });
+            }
+        } catch(RuntimeException ex) {
+            JOptionPane.showMessageDialog(this.view, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            metodoLog.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao realizar operação - " + ex.getMessage()));
         }
+  
     }
     
     private void habilitarBotoes(boolean flag) {
