@@ -3,11 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.ufes.gestaodefuncionarios.presenter;
+package br.ufes.gestaodefuncionarios.model;
 
-import br.ufes.gestaodefuncionarios.model.Bonus;
-import br.ufes.gestaodefuncionarios.model.Funcionario;
-import br.ufes.gestaodefuncionarios.model.IMetodoCalculoBonus;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
@@ -28,14 +26,13 @@ import java.util.Date;
 public class BonusTempodeServico implements IMetodoCalculoBonus {
 
     @Override
-    public Bonus calcular(Funcionario funcionario) {
+    public void calcular(Funcionario funcionario, Date dataCalculo) {
         double porcentagem;
-        LocalDateTime dataAdmissao = funcionario.getDtAdmissao()
-                .toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDateTime();
-        LocalDateTime dataAtual = LocalDateTime.now();
-        long anos = dataAdmissao.until(dataAtual, ChronoUnit.YEARS);
+        LocalDateTime ldtAdmissao = Instant.ofEpochMilli(funcionario.getDtAdmissao().getTime()).atZone(ZoneId.systemDefault()).toLocalDateTime();
+        LocalDateTime ldtCalculo = Instant.ofEpochMilli(dataCalculo.getTime()).atZone(ZoneId.systemDefault()).toLocalDateTime();
+        
+        long anos = ldtAdmissao.until(ldtCalculo, ChronoUnit.YEARS);
+        
         porcentagem = 0;
         if(anos >= 20) {
             porcentagem = 0.15;
@@ -57,10 +54,11 @@ public class BonusTempodeServico implements IMetodoCalculoBonus {
             }
         }
         
-        double valorBonus = funcionario.getSalarioBase() * porcentagem;
+        if(porcentagem > 0) {
+            double valorBonus = funcionario.getSalarioBase() * porcentagem;
+            funcionario.addBonus(new Bonus("Tempo de Serviço", dataCalculo, valorBonus));
+        }
        
-        return new Bonus("Tempo de Serviço", new Date(), valorBonus);
-        
     }
     
 }

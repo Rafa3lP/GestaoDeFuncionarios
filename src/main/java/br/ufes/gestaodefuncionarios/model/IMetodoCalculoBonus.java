@@ -5,10 +5,12 @@
  */
 package br.ufes.gestaodefuncionarios.model;
 
+import java.util.Date;
+
 /**
  *
  * @author Rafael
  */
 public interface IMetodoCalculoBonus {
-    Bonus calcular(Funcionario funcionario);
+    void calcular(Funcionario funcionario, Date dataCalculo);
 }

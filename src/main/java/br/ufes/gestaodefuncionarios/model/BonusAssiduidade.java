@@ -3,11 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.ufes.gestaodefuncionarios.presenter;
+package br.ufes.gestaodefuncionarios.model;
 
-import br.ufes.gestaodefuncionarios.model.Bonus;
-import br.ufes.gestaodefuncionarios.model.Funcionario;
-import br.ufes.gestaodefuncionarios.model.IMetodoCalculoBonus;
 import java.util.Date;
 
 /**
@@ -22,7 +19,7 @@ import java.util.Date;
 public class BonusAssiduidade implements IMetodoCalculoBonus {
 
     @Override
-    public Bonus calcular(Funcionario funcionario) {
+    public void calcular(Funcionario funcionario, Date dataCalculo) {
        double porcentagem;
        int faltas = funcionario.getFaltas();
        if(faltas >= 6) {
@@ -40,7 +37,7 @@ public class BonusAssiduidade implements IMetodoCalculoBonus {
        }
        double valorBonus = funcionario.getSalarioBase() * porcentagem;
 
-       return new Bonus("Assiduidade", new Date(), valorBonus);
+       funcionario.addBonus(new Bonus("Assiduidade", dataCalculo, valorBonus));
        
     }
     

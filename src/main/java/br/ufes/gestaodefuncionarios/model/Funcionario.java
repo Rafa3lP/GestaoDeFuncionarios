@@ -24,6 +24,8 @@ public class Funcionario {
     private boolean funcionarioMes;
     private int faltas;
     private int tipoBonus;
+    private double bonus;
+    private ArrayList<Bonus> bonusRecebidos;
 
     public void setFuncionarioMes(boolean funcionarioMes) {
         this.funcionarioMes = funcionarioMes;
@@ -38,6 +40,7 @@ public class Funcionario {
         setFuncionarioMes(funcionarioMes);
         setFaltas(faltas);
         setTipoBonus(tipoBonus);
+        this.bonusRecebidos = new ArrayList<>();
     }
     
     public Funcionario(int id, String nome, int idade, double salarioBase, String cargo, Date dtAdmissao, boolean funcionarioMes, int faltas, int tipoBonus) {
@@ -50,6 +53,7 @@ public class Funcionario {
         setFuncionarioMes(funcionarioMes);
         setFaltas(faltas);
         setTipoBonus(tipoBonus);
+        this.bonusRecebidos = new ArrayList<>();
     }
     
     @Override
@@ -128,12 +132,30 @@ public class Funcionario {
     public void setTipoBonus(int tipoBonus) {
         this.tipoBonus = tipoBonus;
     }
+
+    public double getBonus() {
+        return bonus;
+    }
+
+    public void setBonus(double bonus) {
+        this.bonus = bonus;
+    }
     
-    public void calcularSalario(ArrayList<IMetodoCalculoBonus> metodosCalculoBonus) {
-        setSalario(0);
-        for(IMetodoCalculoBonus mBonus: metodosCalculoBonus) {
-            this.salario += mBonus.calcular(this).getValor();
+    public void addBonus(Bonus bonus) {
+        this.getBonusRecebidos().add(bonus);
+    }
+    
+    public void calcularSalario() {
+        this.bonus = 0;
+        this.setSalario(this.getSalarioBase());
+        for(Bonus bonus: this.getBonusRecebidos()) {
+            this.salario += bonus.getValor();
+            this.bonus += bonus.getValor();
         }
+    }
+
+    public ArrayList<Bonus> getBonusRecebidos() {
+        return bonusRecebidos;
     }
     
 }

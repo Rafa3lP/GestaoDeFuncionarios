@@ -17,9 +17,12 @@ import java.util.Date;
 public class BonusGeneroso implements IMetodoCalculoBonus {
 
     @Override
-    public Bonus calcular(Funcionario funcionario) {
-        double valorBonus = funcionario.getSalario() * 0.15;
-        return new Bonus("Generoso", new Date(), valorBonus);
+    public void calcular(Funcionario funcionario, Date dataCalculo) {
+        if(funcionario.getTipoBonus() == 2) {
+            double valorBonus = funcionario.getSalarioBase() * 0.15;
+            funcionario.addBonus(new Bonus("Generoso", dataCalculo, valorBonus));
+        }
+        
     }
     
 }

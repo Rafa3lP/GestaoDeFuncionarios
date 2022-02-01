@@ -17,9 +17,12 @@ import java.util.Date;
 public class BonusNormal implements IMetodoCalculoBonus {
 
     @Override
-    public Bonus calcular(Funcionario funcionario) {
-        double valorBonus = funcionario.getSalarioBase() * 0.05;
-        return new Bonus("Normal", new Date(), valorBonus);
+    public void calcular(Funcionario funcionario, Date dataCalculo) {
+        if(funcionario.getTipoBonus() == 1) {
+            double valorBonus = funcionario.getSalarioBase() * 0.05;
+            funcionario.addBonus(new Bonus("Normal", dataCalculo, valorBonus));
+        }
+        
     }
     
 }
