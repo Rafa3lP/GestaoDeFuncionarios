@@ -5,7 +5,9 @@
  */
 package br.ufes.gestaodefuncionarios.model;
 
+import br.ufes.gestaodefuncionarios.dao.FuncionarioDAO;
 import java.util.Date;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -20,7 +22,14 @@ public class BonusGeneroso implements IMetodoCalculoBonus {
     public void calcular(Funcionario funcionario, Date dataCalculo) {
         if(funcionario.getTipoBonus() == 2) {
             double valorBonus = funcionario.getSalarioBase() * 0.15;
-            funcionario.addBonus(new Bonus("Generoso", dataCalculo, valorBonus));
+            Bonus bonus = new Bonus("Generoso", dataCalculo, valorBonus);
+            funcionario.addBonus(bonus);
+            try {
+                FuncionarioDAO fDao = new FuncionarioDAO();
+                fDao.insereFuncionarioBonus(funcionario, bonus);
+            } catch(RuntimeException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
         
     }

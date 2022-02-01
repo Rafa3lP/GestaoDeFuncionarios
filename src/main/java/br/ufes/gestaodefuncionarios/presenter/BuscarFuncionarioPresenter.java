@@ -105,7 +105,7 @@ public class BuscarFuncionarioPresenter {
                 )
             );
 
-            new VerBonusPresenter(true, funcionario);
+            new VerBonusPresenter(true, funcionario, metodoLog);
         } catch(RuntimeException ex) {
             JOptionPane.showMessageDialog(this.view, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             metodoLog.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao realizar operação - " + ex.getMessage()));

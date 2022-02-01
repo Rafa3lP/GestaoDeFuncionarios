@@ -6,7 +6,9 @@
 package br.ufes.gestaodefuncionarios.dao;
 
 import br.ufes.gestaodefuncionarios.factory.ConnectionFactory;
+import br.ufes.gestaodefuncionarios.model.Bonus;
 import br.ufes.gestaodefuncionarios.model.Funcionario;
+import br.ufes.gestaodefuncionarios.model.FuncionarioBonus;
 import br.ufes.gestaodefuncionarios.model.FuncionarioSalario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -59,6 +61,7 @@ public class FuncionarioDAO {
             pst = con.prepareStatement(sql);
             pst.execute();
             criaTFuncionarioSalario();
+            criaTFuncionarioBonus();
         } catch (SQLException ex) {
             Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException("Falha ao criar a tabela funcionario no banco", ex);
@@ -96,6 +99,33 @@ public class FuncionarioDAO {
         }
     }
     
+    private void criaTFuncionarioBonus() {
+        String sql = "CREATE TABLE IF NOT EXISTS funcionarioBonus ("
+                + "idfuncionarioBonus INTEGER PRIMARY KEY AUTOINCREMENT, " 
+                + "idFuncionario INTEGER NOT NULL, " 
+                + "dataCalculo DATE NOT NULL, "
+                + "cargo VARCHAR NOT NULL, "
+                + "tipoBonus VARCHAR NOT NULL, "
+                + "valorBonus DECIMAL(19,4) NOT NULL, "  
+                + "FOREIGN KEY (`idFuncionario`) " 
+                + "REFERENCES funcionario(id)"
+                + ")";
+        Connection con = null;
+        PreparedStatement pst = null;
+        
+        try {
+            con = ConnectionFactory.getConnection();
+            pst = con.prepareStatement(sql);
+            pst.execute();
+        } catch (SQLException ex) {
+            Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Falha ao criar a tabela funcionarioBonus no banco", ex);
+            
+        } finally {
+            ConnectionFactory.closeConnection(con, pst);
+        }
+    }
+    
     public void criar(Funcionario funcionario) {
         String sql = "INSERT INTO funcionario("
                 + "nome, "
@@ -125,6 +155,33 @@ public class FuncionarioDAO {
         } catch (SQLException ex) {
             Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException("Falha ao inserir funcionario no banco", ex);
+        } finally {
+            ConnectionFactory.closeConnection(con, pst);
+        }
+    }
+    
+    public void insereFuncionarioBonus(Funcionario f, Bonus b) {
+        String sql = "INSERT INTO funcionarioBonus ("
+                + "idFuncionario, " 
+                + "dataCalculo, "
+                + "cargo, "
+                + "tipoBonus, "
+                + "valorBonus"
+                + ") VALUES(?,?,?,?,?)";
+        Connection con = null;
+        PreparedStatement pst = null;
+        try {
+            con = ConnectionFactory.getConnection();
+            pst = con.prepareStatement(sql);
+            pst.setInt(1, f.getId());
+            pst.setDate(2, new java.sql.Date(b.getData().getTime()));
+            pst.setString(3, f.getCargo());
+            pst.setString(4, b.getNome());
+            pst.setDouble(5, b.getValor());
+            pst.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Falha ao inserir em funcionarioBonus", ex);
         } finally {
             ConnectionFactory.closeConnection(con, pst);
         }
@@ -197,6 +254,39 @@ public class FuncionarioDAO {
         }
         
         return Collections.unmodifiableList(funcionarios);
+    }
+    
+    public List<FuncionarioBonus> getFuncionarioBonusList(Funcionario f) {
+        String sql = "SELECT * FROM funcionarioBonus WHERE idFuncionario = ?";
+        FuncionarioBonus funcionarioBonus;
+        List<FuncionarioBonus> funcionarioBonusList = new ArrayList<>();
+        
+        Connection con = null;
+        PreparedStatement pst = null;
+        ResultSet resultSet = null;
+        try {
+            con = ConnectionFactory.getConnection();
+            pst = con.prepareStatement(sql);
+            pst.setInt(1, f.getId());
+            resultSet = pst.executeQuery();
+
+            while (resultSet.next()) {
+                String tipo = resultSet.getString("tipoBonus");
+                String cargo = resultSet.getString("cargo");
+                Date dataCalculo = resultSet.getDate("dataCalculo");
+                double valor = resultSet.getDouble("valorBonus");
+               
+                funcionarioBonus = new FuncionarioBonus(tipo, valor, cargo, dataCalculo);
+                funcionarioBonusList.add(funcionarioBonus);
+            }
+        } catch(SQLException ex) {
+            Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Falha ao consultar tabela funcionarioSalario", ex);
+        } finally {
+            ConnectionFactory.closeConnection(con, pst, resultSet);
+        }
+        
+        return Collections.unmodifiableList(funcionarioBonusList);
     }
     
     public List<FuncionarioSalario> getFuncionarioSalarioList() {
@@ -310,6 +400,40 @@ public class FuncionarioDAO {
         return Collections.unmodifiableList(funcionarios);
     }
     
+    private void deletarFuncionarioBonus(Funcionario funcionario) {
+        String sql = "DELETE FROM funcionarioBonus WHERE idFuncionario = ?";
+        Connection con = null;
+        PreparedStatement pst = null;
+        try {
+            con = ConnectionFactory.getConnection();
+            pst = con.prepareStatement(sql);
+            pst.setInt(1, funcionario.getId());
+            pst.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Falha ao deletar da tabela funcionarioBonus", ex);
+        } finally {
+            ConnectionFactory.closeConnection(con, pst);
+        }
+    }
+    
+    private void deletarFuncionarioSalario(Funcionario funcionario) {
+        String sql = "DELETE FROM funcionarioSalario WHERE idFuncionario = ?";
+        Connection con = null;
+        PreparedStatement pst = null;
+        try {
+            con = ConnectionFactory.getConnection();
+            pst = con.prepareStatement(sql);
+            pst.setInt(1, funcionario.getId());
+            pst.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Falha ao deletar da tabela funcionarioSalario", ex);
+        } finally {
+            ConnectionFactory.closeConnection(con, pst);
+        }
+    }
+    
     public void deletar(Funcionario funcionario) {
         String sql = "DELETE FROM funcionario WHERE id = ?";
         Connection con = null;
@@ -319,6 +443,8 @@ public class FuncionarioDAO {
             pst = con.prepareStatement(sql);
             pst.setInt(1, funcionario.getId());
             pst.executeUpdate();
+            deletarFuncionarioBonus(funcionario);
+            deletarFuncionarioSalario(funcionario);
         } catch (SQLException ex) {
             Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException("Falha ao deletar funcionario no banco", ex);

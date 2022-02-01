@@ -5,11 +5,13 @@
  */
 package br.ufes.gestaodefuncionarios.model;
 
+import br.ufes.gestaodefuncionarios.dao.FuncionarioDAO;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -56,7 +58,14 @@ public class BonusTempodeServico implements IMetodoCalculoBonus {
         
         if(porcentagem > 0) {
             double valorBonus = funcionario.getSalarioBase() * porcentagem;
-            funcionario.addBonus(new Bonus("Tempo de Serviço", dataCalculo, valorBonus));
+            Bonus bonus = new Bonus("Tempo de Serviço", dataCalculo, valorBonus);
+            funcionario.addBonus(bonus);
+            try {
+                FuncionarioDAO fDao = new FuncionarioDAO();
+                fDao.insereFuncionarioBonus(funcionario, bonus);
+            } catch(RuntimeException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
        
     }

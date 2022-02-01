@@ -5,7 +5,9 @@
  */
 package br.ufes.gestaodefuncionarios.model;
 
+import br.ufes.gestaodefuncionarios.dao.FuncionarioDAO;
 import java.util.Date;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -20,24 +22,31 @@ public class BonusAssiduidade implements IMetodoCalculoBonus {
 
     @Override
     public void calcular(Funcionario funcionario, Date dataCalculo) {
-       double porcentagem;
-       int faltas = funcionario.getFaltas();
-       if(faltas >= 6) {
-           porcentagem = 0.01;
-       } else {
-           if(faltas >= 4) {
-                porcentagem = 0.01;
-           } else {
-               if(faltas >= 1) {
-                    porcentagem = 0.05;
-               } else {
-                    porcentagem = 0.1;
-               }
-           }
-       }
-       double valorBonus = funcionario.getSalarioBase() * porcentagem;
-
-       funcionario.addBonus(new Bonus("Assiduidade", dataCalculo, valorBonus));
+        double porcentagem;
+        int faltas = funcionario.getFaltas();
+        if(faltas >= 6) {
+            porcentagem = 0.01;
+        } else {
+            if(faltas >= 4) {
+                 porcentagem = 0.01;
+            } else {
+                if(faltas >= 1) {
+                     porcentagem = 0.05;
+                } else {
+                     porcentagem = 0.1;
+                }
+            }
+        }
+        double valorBonus = funcionario.getSalarioBase() * porcentagem;
+        
+        Bonus bonus = new Bonus("Assiduidade", dataCalculo, valorBonus);
+        funcionario.addBonus(bonus);
+        try {
+            FuncionarioDAO fDao = new FuncionarioDAO();
+            fDao.insereFuncionarioBonus(funcionario, bonus);
+        } catch(RuntimeException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
        
     }
     

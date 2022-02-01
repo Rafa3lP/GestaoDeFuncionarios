@@ -5,7 +5,10 @@
  */
 package br.ufes.gestaodefuncionarios.model;
 
+import br.ufes.gestaodefuncionarios.dao.FuncionarioDAO;
 import java.util.Date;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -20,7 +23,15 @@ public class BonusNormal implements IMetodoCalculoBonus {
     public void calcular(Funcionario funcionario, Date dataCalculo) {
         if(funcionario.getTipoBonus() == 1) {
             double valorBonus = funcionario.getSalarioBase() * 0.05;
-            funcionario.addBonus(new Bonus("Normal", dataCalculo, valorBonus));
+            Bonus bonus = new Bonus("Normal", dataCalculo, valorBonus);
+            funcionario.addBonus(bonus);
+            try {
+                FuncionarioDAO fDao = new FuncionarioDAO();
+                fDao.insereFuncionarioBonus(funcionario, bonus);
+            } catch(RuntimeException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
         }
         
     }
