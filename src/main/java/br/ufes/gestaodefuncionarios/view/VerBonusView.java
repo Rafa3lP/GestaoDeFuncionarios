@@ -67,7 +67,7 @@ public class VerBonusView extends javax.swing.JDialog {
         lblNome.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblNome.setText("Nome Funcionario");
 
-        lbl1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lbl1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lbl1.setText("Nome:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

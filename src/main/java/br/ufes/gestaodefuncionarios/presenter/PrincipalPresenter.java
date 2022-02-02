@@ -22,35 +22,26 @@ import javax.swing.JOptionPane;
  */
 public class PrincipalPresenter {
     
-    private final String CONFIG_FILE = "config.ini";
-    private IMetodoLog metodoLog;
     private PrincipalView view;
-    private String logFormat;
     private PropertyManager propertieManager;
     
-    public PrincipalPresenter() {
+    public PrincipalPresenter(String logFormat) {
         this.view = new PrincipalView();
         this.propertieManager = new PropertyManager();
         this.view.getLblVersao().setText(this.propertieManager.getProperty("version"));
         
-        this.logFormat = this.propertieManager.getProperty("logFormat");
-        
-        this.metodoLog = null;
-        
-        if(logFormat.equals("txt")) {
-            this.view.getLblLogFormat().setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/txt-48.png")));
-            this.metodoLog = new LogTxt();
-        } else if(logFormat.equals("json")) {
-            this.view.getLblLogFormat().setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/json-48.png")));
-            this.metodoLog = new LogJSON();
-        } else if(logFormat.equals("xml")){
-            this.view.getLblLogFormat().setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/xml-48.png")));
-            this.metodoLog = new LogXml();
-        }
-        
-        if(this.metodoLog == null) {
-            JOptionPane.showMessageDialog(view, "Não foi possível encontrar o formato de log", "Erro Fatal", JOptionPane.ERROR_MESSAGE);
-            System.exit(1);
+        switch (logFormat) {
+            case "txt":
+                this.view.getLblLogFormat().setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/txt-48.png")));
+                break;
+            case "json":
+                this.view.getLblLogFormat().setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/json-48.png")));
+                break;
+            case "xml":
+                this.view.getLblLogFormat().setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/xml-48.png")));
+                break;
+            default:
+                break;
         }
         
         this.view.getBtnFechar().addActionListener((e) -> {
@@ -84,19 +75,19 @@ public class PrincipalPresenter {
     }
     
     private void criarFuncionario() {
-        new CriarFuncionarioPresenter(this, this.metodoLog);
+        new CriarFuncionarioPresenter(this);
     }
     
     private void buscarFuncionario() {
-        new BuscarFuncionarioPresenter(this, this.metodoLog);
+        new BuscarFuncionarioPresenter(this);
     }
     
     private void calcularSalario() {
-        new CalcularSalarioPresenter(this, this.metodoLog);
+        new CalcularSalarioPresenter(this);
     }
     
     private void configuracoes() {
-        new ConfigPresenter(this, this.metodoLog);
+        new ConfigPresenter(this);
     }
     
     public void addToDesktopPane(JInternalFrame frame) {
@@ -110,7 +101,7 @@ public class PrincipalPresenter {
             this.view.getLblNumFuncionarios().setText(Integer.toString(count)); 
         } catch(RuntimeException ex) {
             JOptionPane.showMessageDialog(view, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-            this.metodoLog.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao executar operação - " + ex.getMessage()));
+            App.AppLogger.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao executar operação - " + ex.getMessage()));
         }
         
     }

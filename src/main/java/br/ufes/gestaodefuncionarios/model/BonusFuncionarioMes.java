@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package br.ufes.gestaodefuncionarios.model;
 
@@ -9,25 +8,22 @@ import br.ufes.gestaodefuncionarios.dao.FuncionarioDAO;
 import br.ufes.gestaodefuncionarios.logger.IMetodoLog;
 import br.ufes.gestaodefuncionarios.logger.Log;
 import br.ufes.gestaodefuncionarios.presenter.App;
-import br.ufes.gestaodefuncionarios.presenter.PrincipalPresenter;
 import java.util.Date;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author Rafael
+ * 
+ * Se o funcionario for o funcionario do mês
+ * Receberá 5% de bônus
  */
-/**
- * Bonus de 5% no valor do salário
- */
-public class BonusNormal implements IMetodoCalculoBonus {
-
+public class BonusFuncionarioMes implements IMetodoCalculoBonus {
     @Override
     public void calcular(Funcionario funcionario, Date dataCalculo) {
-        if(funcionario.getTipoBonus() == 1) {
+        if(funcionario.isFuncionarioMes()) {
             double valorBonus = funcionario.getSalarioBase() * 0.05;
-            Bonus bonus = new Bonus("Normal", dataCalculo, valorBonus);
+            Bonus bonus = new Bonus("Funcionário do mês", dataCalculo, valorBonus);
             funcionario.addBonus(bonus);
             try {
                 FuncionarioDAO fDao = new FuncionarioDAO();
@@ -40,5 +36,4 @@ public class BonusNormal implements IMetodoCalculoBonus {
         }
         
     }
-    
 }

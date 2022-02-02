@@ -6,6 +6,9 @@
 package br.ufes.gestaodefuncionarios.model;
 
 import br.ufes.gestaodefuncionarios.dao.FuncionarioDAO;
+import br.ufes.gestaodefuncionarios.logger.IMetodoLog;
+import br.ufes.gestaodefuncionarios.logger.Log;
+import br.ufes.gestaodefuncionarios.presenter.App;
 import java.util.Date;
 import javax.swing.JOptionPane;
 
@@ -46,6 +49,7 @@ public class BonusAssiduidade implements IMetodoCalculoBonus {
             fDao.insereFuncionarioBonus(funcionario, bonus);
         } catch(RuntimeException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            App.AppLogger.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao realizar operação - " + ex.getMessage()));
         }
        
     }

@@ -9,9 +9,8 @@ import br.ufes.gestaodefuncionarios.logger.IMetodoLog;
 import br.ufes.gestaodefuncionarios.logger.Log;
 import br.ufes.gestaodefuncionarios.model.Funcionario;
 import br.ufes.gestaodefuncionarios.model.FuncionarioBonus;
-import br.ufes.gestaodefuncionarios.model.FuncionarioSalario;
 import br.ufes.gestaodefuncionarios.view.VerBonusView;
-import javax.swing.JDialog;
+import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -24,10 +23,8 @@ public class VerBonusPresenter {
     private VerBonusView view;
     private Funcionario funcionario;
     private JTable tabela;
-    private IMetodoLog metodoLog;
 
-    public VerBonusPresenter(boolean modal, Funcionario funcionario, IMetodoLog metodoLog) {
-        this.metodoLog = metodoLog;
+    public VerBonusPresenter(boolean modal, Funcionario funcionario) {
         this.funcionario = funcionario;
         this.view = new VerBonusView(new java.awt.Frame(), modal);
         this.view.setTitle("Ver Bônus");
@@ -40,6 +37,13 @@ public class VerBonusPresenter {
         this.view.getBtnOk().addActionListener((e) -> {
             fechar();
         });
+        
+        App.AppLogger.escreveLog(
+            new Log(
+                IMetodoLog.LOG_INFORMATION, 
+                "Bônus consultado para o funcionário " + funcionario.getNome()
+            )
+        );
         
         this.view.setVisible(true);
     }
@@ -54,18 +58,24 @@ public class VerBonusPresenter {
             modelo.setNumRows(0);
 
             FuncionarioDAO fDao = new FuncionarioDAO();
+            
+            SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
            
             for(FuncionarioBonus fb: fDao.getFuncionarioBonusList(this.funcionario)) {
+                String data = "";
+                if(fb.getDataCalculo() != null) {
+                    data = df.format(fb.getDataCalculo());
+                }
                 modelo.addRow(new Object[]{
-                    fb.getDataCalculo(),
+                    data,
                     fb.getCargoFuncionario(),
                     fb.getTipoBonus(),
-                    fb.getValorBonus()
+                    String.format("%.2f", fb.getValorBonus())
                 });
             }
         } catch(RuntimeException ex) {
             JOptionPane.showMessageDialog(this.view, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-            metodoLog.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao realizar operação - " + ex.getMessage()));
+            App.AppLogger.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao realizar operação - " + ex.getMessage()));
         }
     }
 }

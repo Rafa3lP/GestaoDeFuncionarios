@@ -75,7 +75,7 @@ public class FuncionarioDAO {
     private void criaTFuncionarioSalario() {
         String sql = "CREATE TABLE IF NOT EXISTS funcionarioSalario ("
                 + "idFuncionarioSalario INTEGER PRIMARY KEY AUTOINCREMENT, " 
-                + "idFuncionario INTEGER NOT NULL UNIQUE, " 
+                + "idFuncionario INTEGER NOT NULL, " 
                 + "dataCalculo DATE NOT NULL, " 
                 + "salarioBase DECIMAL(19,4) NOT NULL, " 
                 + "bonus DECIMAL(19,4) NOT NULL, " 
@@ -102,11 +102,11 @@ public class FuncionarioDAO {
     private void criaTFuncionarioBonus() {
         String sql = "CREATE TABLE IF NOT EXISTS funcionarioBonus ("
                 + "idfuncionarioBonus INTEGER PRIMARY KEY AUTOINCREMENT, " 
-                + "idFuncionario INTEGER NOT NULL, " 
+                + "idFuncionario INTEGER NOT NULL, "
                 + "dataCalculo DATE NOT NULL, "
                 + "cargo VARCHAR NOT NULL, "
                 + "tipoBonus VARCHAR NOT NULL, "
-                + "valorBonus DECIMAL(19,4) NOT NULL, "  
+                + "valorBonus DECIMAL(19,4) NOT NULL, "
                 + "FOREIGN KEY (`idFuncionario`) " 
                 + "REFERENCES funcionario(id)"
                 + ")";
@@ -187,8 +187,8 @@ public class FuncionarioDAO {
         }
     }
     
-    public void upsertFuncionarioSalario(FuncionarioSalario fs) {
-        String sql = "INSERT INTO funcionarioSalario("
+    public void insereFuncionarioSalario(FuncionarioSalario fs) {
+        /*String sql = "INSERT INTO funcionarioSalario("
                 + "idFuncionario, "
                 + "dataCalculo, "
                 + "salarioBase, "
@@ -201,7 +201,14 @@ public class FuncionarioDAO {
                 + "salarioBase = excluded.salarioBase, "
                 + "bonus = excluded.bonus, "
                 + "salarioTotal = excluded.salarioTotal";
-        
+        */
+        String sql = "INSERT INTO funcionarioSalario("
+                + "idFuncionario, "
+                + "dataCalculo, "
+                + "salarioBase, "
+                + "bonus, "
+                + "salarioTotal"
+                + ") VALUES(?,?,?,?,?)";
         Connection con = null;
         PreparedStatement pst = null;
         try {
@@ -508,6 +515,32 @@ public class FuncionarioDAO {
         }
         
         return count;
+    }
+    
+    public boolean isSalarioCalculatedFor(Funcionario f, Date dataCalculo) {
+        String sql = "SELECT COUNT(*) AS rowcount "
+                + "FROM funcionarioSalario "
+                + "WHERE idFuncionario = ? AND dataCalculo = ?";
+        int count = 0;
+        Connection con = null;
+        PreparedStatement pst = null;
+        ResultSet resultSet = null;
+        try {
+            con = ConnectionFactory.getConnection();
+            pst = con.prepareStatement(sql);
+            pst.setInt(1, f.getId());
+            pst.setDate(2, new java.sql.Date(dataCalculo.getTime()));
+            resultSet = pst.executeQuery();
+            resultSet.next();
+            count = resultSet.getInt("rowcount");
+            if(count == 0) return false;
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Falha ao obter count de salario calculado", ex);
+        } finally {
+            ConnectionFactory.closeConnection(con, pst, resultSet);
+        }
     }
     
 }

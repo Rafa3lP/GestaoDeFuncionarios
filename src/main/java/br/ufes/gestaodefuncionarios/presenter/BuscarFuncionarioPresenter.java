@@ -22,10 +22,8 @@ public class BuscarFuncionarioPresenter {
     private JTable tabela;
     private PrincipalPresenter principalPresenter;
     private BuscarFuncionarioView view;
-    private IMetodoLog metodoLog;
 
-    public BuscarFuncionarioPresenter(PrincipalPresenter principalPresenter, IMetodoLog metodoLog) {
-        this.metodoLog = metodoLog;
+    public BuscarFuncionarioPresenter(PrincipalPresenter principalPresenter) {
         this.principalPresenter = principalPresenter;
         this.view = new BuscarFuncionarioView();
         this.view.setTitle("Buscar Funcionário");
@@ -66,13 +64,14 @@ public class BuscarFuncionarioPresenter {
                 "Erro", 
                 JOptionPane.ERROR_MESSAGE
             );
+            App.AppLogger.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao realizar operação - " + ex.getMessage()));
             fechar();
         }
         
     }
     
     private void novo() {
-        new CriarFuncionarioPresenter(this.principalPresenter, this.metodoLog);
+        new CriarFuncionarioPresenter(this.principalPresenter);
         this.view.dispose();
     }
     
@@ -87,8 +86,7 @@ public class BuscarFuncionarioPresenter {
     private void visualizar() {
         new VisualizarFuncionarioPresenter(
                 Integer.parseInt(this.tabela.getValueAt(this.tabela.getSelectedRow(), 0).toString()), 
-                principalPresenter,
-                this.metodoLog
+                principalPresenter
         );
     }
     
@@ -105,10 +103,10 @@ public class BuscarFuncionarioPresenter {
                 )
             );
 
-            new VerBonusPresenter(true, funcionario, metodoLog);
+            new VerBonusPresenter(true, funcionario);
         } catch(RuntimeException ex) {
             JOptionPane.showMessageDialog(this.view, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-            metodoLog.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao realizar operação - " + ex.getMessage()));
+            App.AppLogger.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao realizar operação - " + ex.getMessage()));
         }
         
         
@@ -131,12 +129,12 @@ public class BuscarFuncionarioPresenter {
                     f.getNome(),
                     f.getIdade(),
                     f.getCargo(),
-                    f.getSalarioBase()
+                    String.format("%.2f", f.getSalarioBase())
                 });
             }
         } catch(RuntimeException ex) {
             JOptionPane.showMessageDialog(this.view, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-            metodoLog.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao realizar operação - " + ex.getMessage()));
+            App.AppLogger.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao realizar operação - " + ex.getMessage()));
         }
  
     }
@@ -154,12 +152,12 @@ public class BuscarFuncionarioPresenter {
                     f.getNome(),
                     f.getIdade(),
                     f.getCargo(),
-                    f.getSalarioBase()
+                    String.format("%.2f", f.getSalarioBase())
                 });
             }
         } catch(RuntimeException ex) {
             JOptionPane.showMessageDialog(this.view, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-            metodoLog.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao realizar operação - " + ex.getMessage()));
+            App.AppLogger.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao realizar operação - " + ex.getMessage()));
         }
   
     }

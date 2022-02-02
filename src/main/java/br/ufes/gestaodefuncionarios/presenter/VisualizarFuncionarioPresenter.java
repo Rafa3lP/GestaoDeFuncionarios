@@ -22,11 +22,9 @@ public class VisualizarFuncionarioPresenter {
     private ManterFuncionarioView view;
     private PrincipalPresenter principalPresenter;
     private Funcionario funcionario;
-    private IMetodoLog metodoLog;
     private FuncionarioDAO fDao;
     
-    public VisualizarFuncionarioPresenter(int idFuncionario, PrincipalPresenter principalPresenter, IMetodoLog metodoLog) {
-        this.metodoLog = metodoLog;
+    public VisualizarFuncionarioPresenter(int idFuncionario, PrincipalPresenter principalPresenter) {
         fDao = new FuncionarioDAO();
         this.principalPresenter = principalPresenter;
         this.view = new ManterFuncionarioView();
@@ -57,7 +55,7 @@ public class VisualizarFuncionarioPresenter {
             
         } catch(RuntimeException ex) {
             JOptionPane.showMessageDialog(view, ex.getMessage(), "erro", JOptionPane.ERROR_MESSAGE);
-            this.metodoLog.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao realizar a operação"));
+            App.AppLogger.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao realizar a operação"));
             fechar();
         }
 
@@ -97,12 +95,12 @@ public class VisualizarFuncionarioPresenter {
         if(confirmacao == JOptionPane.YES_OPTION) {
             try {
                 fDao.deletar(this.funcionario);
-                this.metodoLog.escreveLog(new Log(IMetodoLog.LOG_INFORMATION, "Funcionario " + this.funcionario.getNome() + " removido"));
+                App.AppLogger.escreveLog(new Log(IMetodoLog.LOG_INFORMATION, "Funcionario " + this.funcionario.getNome() + " removido"));
                 this.principalPresenter.atualizaNumFuncionarios();
                 fechar();
             } catch(RuntimeException ex) {
                 JOptionPane.showMessageDialog(view, ex.getMessage(), "erro", JOptionPane.ERROR_MESSAGE);
-                this.metodoLog.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao realizar a operação"));
+                App.AppLogger.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao realizar a operação"));
             }
             
         }
@@ -122,13 +120,13 @@ public class VisualizarFuncionarioPresenter {
                     JOptionPane.INFORMATION_MESSAGE
             );
             
-            this.metodoLog.escreveLog(new Log(IMetodoLog.LOG_INFORMATION, "Funcionario " + funcionario.getNome() + " atualizado"));
+            App.AppLogger.escreveLog(new Log(IMetodoLog.LOG_INFORMATION, "Funcionario " + funcionario.getNome() + " atualizado"));
             
             visualizar();
             
         } catch(RuntimeException ex) {
             JOptionPane.showMessageDialog(view, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-            this.metodoLog.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao realizar a operação - " + ex.getMessage()));
+            App.AppLogger.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao realizar a operação - " + ex.getMessage()));
         } catch(IOException ex) {
             JOptionPane.showMessageDialog(view, ex.getMessage(), "Aviso", JOptionPane.WARNING_MESSAGE);
         }

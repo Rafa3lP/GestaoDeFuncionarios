@@ -6,20 +6,12 @@
 package br.ufes.gestaodefuncionarios.presenter;
 
 import br.ufes.gestaodefuncionarios.logger.IMetodoLog;
+import br.ufes.gestaodefuncionarios.logger.Log;
 import br.ufes.gestaodefuncionarios.logger.LogJSON;
 import br.ufes.gestaodefuncionarios.logger.LogTxt;
 import br.ufes.gestaodefuncionarios.logger.LogXml;
 import br.ufes.gestaodefuncionarios.prop.PropertyManager;
 import br.ufes.gestaodefuncionarios.view.ConfigView;
-import com.sun.tools.javac.Main;
-import java.io.File;
-import java.io.IOException;
-import java.lang.management.ManagementFactory;
-import java.net.URL;
-import java.security.CodeSource;
-import java.security.ProtectionDomain;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -29,13 +21,11 @@ import javax.swing.JOptionPane;
 public class ConfigPresenter {
     private PrincipalPresenter principalPresenter;
     private ConfigView view;
-    private IMetodoLog metodoLog;
     private PropertyManager propertieManager;
 
-    public ConfigPresenter(PrincipalPresenter principalPresenter, IMetodoLog metodoLog) {
+    public ConfigPresenter(PrincipalPresenter principalPresenter) {
         this.principalPresenter = principalPresenter;
         this.view = new ConfigView();
-        this.metodoLog = metodoLog;
         this.propertieManager = new PropertyManager();
         this.view.setTitle("Configurar");
         
@@ -55,6 +45,7 @@ public class ConfigPresenter {
                             "Erro", 
                             JOptionPane.ERROR_MESSAGE
                     );
+                    App.AppLogger.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao realizar operação - " + ex.getMessage()));
                 }
                 
             }
@@ -78,37 +69,29 @@ public class ConfigPresenter {
         );
         if(resposta == JOptionPane.YES_OPTION) {
             IMetodoLog newMetodoLog;
-            if(logFormat.equals("txt")) {
-                newMetodoLog = new LogTxt();
-            } else if(logFormat.equals("json")) {
-                newMetodoLog = new LogJSON();
-            } else if(logFormat.equals("xml")) {
-                newMetodoLog = new LogXml();
-            } else {
-                throw new RuntimeException("Não foi possível alterar o formato do log");
+            switch (logFormat) {
+                case "txt":
+                    newMetodoLog = new LogTxt();
+                    break;
+                case "json":
+                    newMetodoLog = new LogJSON();
+                    break;
+                case "xml":
+                    newMetodoLog = new LogXml();
+                    break;
+                default:
+                    throw new RuntimeException("Não foi possível alterar o formato do log");
             }
-            newMetodoLog.migraLog(this.metodoLog);
+            
+            newMetodoLog.migraLog(App.AppLogger);
+            
             propertieManager.setProp("logFormat", logFormat);
-            restart();
-        }  
+            
+            App.restart();
+        }
+        
         fechar();
         
     }
-    
-    public static void restart() {
-        try {
-            
-            StringBuilder cmd = new StringBuilder();
-            cmd.append(System.getProperty("java.home") + File.separator + "bin" + File.separator + "java ");
-            
-            cmd.append("-jar ").append(ManagementFactory.getRuntimeMXBean().getClassPath()).append(" ");
-          
-            Runtime.getRuntime().exec(cmd.toString());
-            System.out.println("Executar comando: \n " + cmd.toString());
-            System.exit(0);
-        } catch (IOException ex) {
-            Logger.getLogger(Inicializar.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
+   
 }

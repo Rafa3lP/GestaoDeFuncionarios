@@ -25,10 +25,8 @@ public class CriarFuncionarioPresenter {
     private FuncionarioDAO dao;
     private ManterFuncionarioView view;
     private PrincipalPresenter principalPresenter;
-    private IMetodoLog metodoLog;
 
-    public CriarFuncionarioPresenter(PrincipalPresenter principalPresenter, IMetodoLog metodoLog) {
-        this.metodoLog = metodoLog;
+    public CriarFuncionarioPresenter(PrincipalPresenter principalPresenter) {
         this.view = new ManterFuncionarioView();
         this.principalPresenter = principalPresenter;
         this.view.setTitle("Novo Funcionário");
@@ -62,7 +60,7 @@ public class CriarFuncionarioPresenter {
                     JOptionPane.INFORMATION_MESSAGE
             );
             
-            this.metodoLog.escreveLog(new Log(IMetodoLog.LOG_INFORMATION, "Funcionario " + novoFuncionario.getNome() + " adicionado"));
+            App.AppLogger.escreveLog(new Log(IMetodoLog.LOG_INFORMATION, "Funcionario " + novoFuncionario.getNome() + " adicionado"));
             
             limparCampos();
             
@@ -70,7 +68,7 @@ public class CriarFuncionarioPresenter {
             
         } catch(RuntimeException ex) {
             JOptionPane.showMessageDialog(view, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-            this.metodoLog.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao realizar a operação"));
+            App.AppLogger.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao realizar a operação"));
         } catch(IOException ex) {
             JOptionPane.showMessageDialog(view, ex.getMessage(), "Aviso", JOptionPane.WARNING_MESSAGE);
         }

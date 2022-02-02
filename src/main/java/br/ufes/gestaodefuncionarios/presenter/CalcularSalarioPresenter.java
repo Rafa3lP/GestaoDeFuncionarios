@@ -10,12 +10,14 @@ import br.ufes.gestaodefuncionarios.model.BonusAssiduidade;
 import br.ufes.gestaodefuncionarios.dao.FuncionarioDAO;
 import br.ufes.gestaodefuncionarios.logger.IMetodoLog;
 import br.ufes.gestaodefuncionarios.logger.Log;
+import br.ufes.gestaodefuncionarios.model.BonusFuncionarioMes;
 import br.ufes.gestaodefuncionarios.model.BonusGeneroso;
 import br.ufes.gestaodefuncionarios.model.BonusNormal;
 import br.ufes.gestaodefuncionarios.model.Funcionario;
 import br.ufes.gestaodefuncionarios.model.FuncionarioSalario;
 import br.ufes.gestaodefuncionarios.model.IMetodoCalculoBonus;
 import br.ufes.gestaodefuncionarios.view.CalcularSalarioView;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JOptionPane;
@@ -29,12 +31,10 @@ import javax.swing.table.DefaultTableModel;
 public class CalcularSalarioPresenter {
     private CalcularSalarioView view;
     private PrincipalPresenter principalPresenter;
-    private IMetodoLog metodoLog;
     private JTable tabela;
     private ArrayList<IMetodoCalculoBonus> tiposDeBonus;
 
-    public CalcularSalarioPresenter(PrincipalPresenter principalPresenter, IMetodoLog metodoLog) {
-        this.metodoLog = metodoLog;
+    public CalcularSalarioPresenter(PrincipalPresenter principalPresenter) {
         this.principalPresenter = principalPresenter;
         this.view = new CalcularSalarioView();
         this.view.setTitle("Calcular Salário");
@@ -46,6 +46,7 @@ public class CalcularSalarioPresenter {
         tiposDeBonus.add(new BonusGeneroso());
         tiposDeBonus.add(new BonusAssiduidade());
         tiposDeBonus.add(new BonusTempodeServico());
+        tiposDeBonus.add(new BonusFuncionarioMes());
 
         lerTabela();
         
@@ -86,20 +87,26 @@ public class CalcularSalarioPresenter {
             modelo.setNumRows(0);
 
             FuncionarioDAO fDao = new FuncionarioDAO();
-
+            
+            SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+            
             for(FuncionarioSalario fs: fDao.getFuncionarioSalarioList()) {
+                String data = "";
+                if(fs.getDataCalculo() != null) {
+                    data = df.format(fs.getDataCalculo());
+                }
                 modelo.addRow(new Object[]{
                     fs.getFuncionarioId(),
                     fs.getFuncionario(),
-                    fs.getDataCalculo(),
-                    fs.getSalarioBase(),
-                    fs.getBonus(),
-                    fs.getSalario()
+                    data,
+                    String.format("%.2f", fs.getSalarioBase()),
+                    String.format("%.2f", fs.getBonus()),
+                    String.format("%.2f", fs.getSalario())
                 });
             }
         } catch(RuntimeException ex) {
             JOptionPane.showMessageDialog(this.view, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-            metodoLog.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao realizar operação - " + ex.getMessage()));
+            App.AppLogger.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao realizar operação - " + ex.getMessage()));
         }
     }
     
@@ -109,10 +116,20 @@ public class CalcularSalarioPresenter {
             int funcionarioId = Integer.parseInt(this.tabela.getValueAt(this.tabela.getSelectedRow(), 0).toString());
             Funcionario funcionario = fDao.getFuncionarioById(funcionarioId);
            
+            Date dataCalculo = this.view.getDtCalculo().getDate();
+            
+            if(fDao.isSalarioCalculatedFor(funcionario, dataCalculo)) {
+                JOptionPane.showMessageDialog(
+                        view, 
+                        "O salario já foi calculado para essa data", 
+                        "Erro", 
+                        JOptionPane.WARNING_MESSAGE
+                );
+                return;
+            }
+            
             //limpa a lista de bonus do funcionario
             funcionario.getBonusRecebidos().clear();
-            
-            Date dataCalculo = this.view.getDtCalculo().getDate();
            
             //para todos os tipos de bonus...
             for(IMetodoCalculoBonus metodoBonus: tiposDeBonus) {
@@ -121,24 +138,24 @@ public class CalcularSalarioPresenter {
             
             funcionario.calcularSalario();
             
-            fDao.upsertFuncionarioSalario(
-                    new FuncionarioSalario(
-                            funcionario.getId(), 
-                            funcionario.getNome(), 
-                            dataCalculo, 
-                            funcionario.getSalarioBase(), 
-                            funcionario.getBonus(),
-                            funcionario.getSalario()
-                    )
+            fDao.insereFuncionarioSalario(
+                new FuncionarioSalario(
+                    funcionario.getId(), 
+                    funcionario.getNome(), 
+                    dataCalculo, 
+                    funcionario.getSalarioBase(), 
+                    funcionario.getBonus(),
+                    funcionario.getSalario()
+                )
             );
             
             lerTabela();
             
-            metodoLog.escreveLog(new Log(IMetodoLog.LOG_INFORMATION, "Salario calculado para o funcionario " + funcionario.getNome()));
+            App.AppLogger.escreveLog(new Log(IMetodoLog.LOG_INFORMATION, "Salario calculado para o funcionario " + funcionario.getNome()));
             
         } catch(RuntimeException ex) {
             JOptionPane.showMessageDialog(view, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-            metodoLog.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao realizar operação - " + ex.getMessage()));
+            App.AppLogger.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao realizar operação - " + ex.getMessage()));
         }
         
     }

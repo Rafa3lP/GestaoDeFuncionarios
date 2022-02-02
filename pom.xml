@@ -69,7 +69,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib</classpathPrefix>
-                            <mainClass>br.ufes.gestaodefuncionarios.presenter.Inicializar</mainClass>
+                            <mainClass>br.ufes.gestaodefuncionarios.presenter.App</mainClass>
                         </manifest>
                     </archive>
                     <outputDirectory>${project.build.directory}/dist</outputDirectory>
