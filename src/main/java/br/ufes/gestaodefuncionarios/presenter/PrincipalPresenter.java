@@ -105,8 +105,16 @@ public class PrincipalPresenter implements Observer {
     }
 
     @Override
-    public void update() {
-        atualizaNumFuncionarios();
+    public void update(String message) {
+        switch(message) {
+            case "add":
+            case "delete":
+                atualizaNumFuncionarios();
+                break;
+            default:
+                break;
+        }
+        
     }
     
 }

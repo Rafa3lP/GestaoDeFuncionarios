@@ -81,7 +81,6 @@ public class BuscarFuncionarioPresenter implements Observer{
     
     private void novo() {
         new CriarFuncionarioPresenter(this.principalPresenter);
-        this.view.dispose();
     }
     
     private void buscar() {
@@ -178,7 +177,7 @@ public class BuscarFuncionarioPresenter implements Observer{
     }
 
     @Override
-    public void update() {
+    public void update(String message) {
        try {
            if(!this.view.getTxtNome().getText().isEmpty()) {
                this.view.getTxtNome().setText("");

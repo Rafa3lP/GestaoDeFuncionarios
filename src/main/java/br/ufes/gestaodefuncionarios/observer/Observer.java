@@ -9,5 +9,5 @@ package br.ufes.gestaodefuncionarios.observer;
  * @author Rafael
  */
 public interface Observer {
-    void update();
+    void update(String message);
 }

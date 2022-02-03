@@ -16,19 +16,28 @@ import javax.swing.JTable;
  */
 public class CalcularSalarioView extends javax.swing.JInternalFrame {
     private JDateChooser dtCalculo;
+    private JDateChooser dtBusca;
     /**
      * Creates new form CalcularSalarioView
      */
     public CalcularSalarioView() {
         initComponents();
-   
+        Date now = new Date();
+        
         dtCalculo = new JDateChooser("dd/MM/yyyy", "##/##/####", '_');
-        dtCalculo.setDate(new Date());
-        dtCalculo.setMaxSelectableDate(new Date());
+        dtCalculo.setDate(now);
+        dtCalculo.setMaxSelectableDate(now);
   
         dtCalculo.setBounds(420, 342, 122, 22);
-      
+        
+        dtBusca = new JDateChooser("dd/MM/yyyy", "##/##/####", '_');
+        dtBusca.setDate(now);
+        dtBusca.setMaxSelectableDate(now);
+        
+        dtBusca.setBounds(10, 12, 122, 22);
+        
         this.jPanel1.add(dtCalculo);
+        this.jPanel1.add(dtBusca);
     }
 
     /**
@@ -47,6 +56,7 @@ public class CalcularSalarioView extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tSalario = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
+        btnBuscar = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -79,15 +89,15 @@ public class CalcularSalarioView extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Data do Cálculo");
 
+        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/search-24.png"))); // NOI18N
+        btnBuscar.setText("Buscar");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addGap(149, 555, Short.MAX_VALUE)
-                        .addComponent(btnListar))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -97,16 +107,23 @@ public class CalcularSalarioView extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 234, Short.MAX_VALUE)
                                 .addComponent(jLabel1)
                                 .addGap(159, 159, 159)
-                                .addComponent(btnCalcular)))))
+                                .addComponent(btnCalcular))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(150, 150, 150)
+                        .addComponent(btnBuscar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnListar)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(7, 7, 7)
-                .addComponent(btnListar)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnListar)
+                    .addComponent(btnBuscar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnFechar)
@@ -131,6 +148,7 @@ public class CalcularSalarioView extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCalcular;
     private javax.swing.JButton btnFechar;
     private javax.swing.JButton btnListar;
@@ -160,4 +178,13 @@ public class CalcularSalarioView extends javax.swing.JInternalFrame {
     public JTable getTSalario() {
         return tSalario;
     }
+
+    public JButton getBtnBuscar() {
+        return btnBuscar;
+    }
+
+    public JDateChooser getDtBusca() {
+        return dtBusca;
+    }
+    
 }

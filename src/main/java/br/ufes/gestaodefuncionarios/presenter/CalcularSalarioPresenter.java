@@ -5,9 +5,10 @@
  */
 package br.ufes.gestaodefuncionarios.presenter;
 
+import br.ufes.gestaodefuncionarios.collection.FuncionarioCollection;
+import br.ufes.gestaodefuncionarios.collection.FuncionarioSalarioCollection;
 import br.ufes.gestaodefuncionarios.model.BonusTempodeServico;
 import br.ufes.gestaodefuncionarios.model.BonusAssiduidade;
-import br.ufes.gestaodefuncionarios.dao.FuncionarioDAO;
 import br.ufes.gestaodefuncionarios.logger.IMetodoLog;
 import br.ufes.gestaodefuncionarios.logger.Log;
 import br.ufes.gestaodefuncionarios.model.BonusFuncionarioMes;
@@ -16,6 +17,7 @@ import br.ufes.gestaodefuncionarios.model.BonusNormal;
 import br.ufes.gestaodefuncionarios.model.Funcionario;
 import br.ufes.gestaodefuncionarios.model.FuncionarioSalario;
 import br.ufes.gestaodefuncionarios.model.IMetodoCalculoBonus;
+import br.ufes.gestaodefuncionarios.observer.Observer;
 import br.ufes.gestaodefuncionarios.view.CalcularSalarioView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,14 +30,19 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Rafael
  */
-public class CalcularSalarioPresenter {
+public class CalcularSalarioPresenter implements Observer{
     private CalcularSalarioView view;
     private PrincipalPresenter principalPresenter;
     private JTable tabela;
     private ArrayList<IMetodoCalculoBonus> tiposDeBonus;
+    private FuncionarioCollection fCollection;
+    private FuncionarioSalarioCollection fsCollection;
 
     public CalcularSalarioPresenter(PrincipalPresenter principalPresenter) {
         this.principalPresenter = principalPresenter;
+        this.fCollection = FuncionarioCollection.getInstance();
+        this.fCollection.addObserver(this);
+        this.fsCollection = FuncionarioSalarioCollection.getInstance();
         this.view = new CalcularSalarioView();
         this.view.setTitle("Calcular Salário");
         this.tabela = view.getTSalario();
@@ -72,12 +79,18 @@ public class CalcularSalarioPresenter {
             lerTabela();
         });
         
+        this.view.getBtnBuscar().addActionListener((e) -> {
+            System.out.println("clicou");
+            lerTabelaByDate(this.view.getDtBusca().getDate());
+        });
+        
         this.principalPresenter.addToDesktopPane(this.view);
         this.view.setVisible(true);
 
     }
     
     private void fechar() {
+        this.fCollection.removeObserver(this);
         this.view.dispose();
     }
     
@@ -85,12 +98,38 @@ public class CalcularSalarioPresenter {
         try {
             DefaultTableModel modelo = (DefaultTableModel) this.tabela.getModel();
             modelo.setNumRows(0);
-
-            FuncionarioDAO fDao = new FuncionarioDAO();
             
             SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
             
-            for(FuncionarioSalario fs: fDao.getFuncionarioSalarioList()) {
+            for(FuncionarioSalario fs: fsCollection.getFuncionarioSalarioList()) {
+                String data = "";
+                if(fs.getDataCalculo() != null) {
+                    data = df.format(fs.getDataCalculo());
+                }
+                modelo.addRow(new Object[]{
+                    fs.getFuncionarioId(),
+                    fs.getFuncionario(),
+                    data,
+                    String.format("%.2f", fs.getSalarioBase()),
+                    String.format("%.2f", fs.getBonus()),
+                    String.format("%.2f", fs.getSalario())
+                });
+            }
+        } catch(RuntimeException ex) {
+            JOptionPane.showMessageDialog(this.view, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            App.AppLogger.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao realizar operação - " + ex.getMessage()));
+        }
+    }
+    
+    private void lerTabelaByDate(Date date) {
+        try {
+            System.out.println("entra na funcao");
+            DefaultTableModel modelo = (DefaultTableModel) this.tabela.getModel();
+            modelo.setNumRows(0);
+            
+            SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+            
+            for(FuncionarioSalario fs: fsCollection.getFuncionarioSalarioListByDate(date)) {
                 String data = "";
                 if(fs.getDataCalculo() != null) {
                     data = df.format(fs.getDataCalculo());
@@ -112,13 +151,12 @@ public class CalcularSalarioPresenter {
     
     private void calcular() {
         try {
-            FuncionarioDAO fDao = new FuncionarioDAO();
             int funcionarioId = Integer.parseInt(this.tabela.getValueAt(this.tabela.getSelectedRow(), 0).toString());
-            Funcionario funcionario = fDao.getFuncionarioById(funcionarioId);
+            Funcionario funcionario = fCollection.getFuncionarioById(funcionarioId);
            
             Date dataCalculo = this.view.getDtCalculo().getDate();
             
-            if(fDao.isSalarioCalculatedFor(funcionario, dataCalculo)) {
+            if(fsCollection.isSalarioCalculatedFor(funcionario, dataCalculo)) {
                 JOptionPane.showMessageDialog(
                         view, 
                         "O salario já foi calculado para essa data", 
@@ -138,7 +176,7 @@ public class CalcularSalarioPresenter {
             
             funcionario.calcularSalario();
             
-            fDao.insereFuncionarioSalario(
+            fsCollection.addFuncionarioSalario(
                 new FuncionarioSalario(
                     funcionario.getId(), 
                     funcionario.getNome(), 
@@ -162,6 +200,11 @@ public class CalcularSalarioPresenter {
     
     private void habilitarBotoes(Boolean flag) {
         view.getBtnCalcular().setEnabled(flag);
+    }
+
+    @Override
+    public void update(String message) {
+        lerTabela();
     }
     
 }

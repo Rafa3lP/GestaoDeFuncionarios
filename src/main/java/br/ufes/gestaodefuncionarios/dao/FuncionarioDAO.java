@@ -229,7 +229,8 @@ public class FuncionarioDAO {
     }
     
     public List<Funcionario> getFuncionarios() {
-        String sql = "SELECT * FROM funcionario";
+        String sql = "SELECT * FROM funcionario "
+                + "ORDER BY nome ASC";
         Funcionario funcionario;
         List<Funcionario> funcionarios = new ArrayList<>();
         Connection con = null;
@@ -264,7 +265,9 @@ public class FuncionarioDAO {
     }
     
     public List<FuncionarioBonus> getFuncionarioBonusList(Funcionario f) {
-        String sql = "SELECT * FROM funcionarioBonus WHERE idFuncionario = ?";
+        String sql = "SELECT * FROM funcionarioBonus "
+                + "WHERE idFuncionario = ? "
+                + "ORDER BY dataCalculo DESC";
         FuncionarioBonus funcionarioBonus;
         List<FuncionarioBonus> funcionarioBonusList = new ArrayList<>();
         
@@ -306,7 +309,8 @@ public class FuncionarioDAO {
                 + "fs.salarioTotal "
                 + "FROM funcionario f "
                 + "LEFT JOIN funcionarioSalario fs "
-                + "ON f.id = fs.idFuncionario";
+                + "ON f.id = fs.idFuncionario "
+                + "ORDER BY f.nome ASC";
         FuncionarioSalario funcionarioSalario;
         List<FuncionarioSalario> funcionarioSalarioList = new ArrayList<>();
         Connection con = null;
@@ -315,6 +319,51 @@ public class FuncionarioDAO {
         try {
             con = ConnectionFactory.getConnection();
             pst = con.prepareStatement(sql);
+            resultSet = pst.executeQuery();
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String nome = resultSet.getString("nome");
+                Date dataCalculo = resultSet.getDate("dataCalculo");
+                double salarioBase = resultSet.getDouble("salarioBase");
+                double bonus = resultSet.getDouble("bonus");
+                double salarioTotal = resultSet.getDouble("salarioTotal");
+               
+                funcionarioSalario = new FuncionarioSalario(id, nome, dataCalculo, salarioBase, bonus, salarioTotal);
+                funcionarioSalarioList.add(funcionarioSalario);
+            }
+        } catch(SQLException ex) {
+            Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Falha ao consultar tabela funcionarioSalario", ex);
+        } finally {
+            ConnectionFactory.closeConnection(con, pst, resultSet);
+        }
+        
+        return Collections.unmodifiableList(funcionarioSalarioList);
+    }
+    
+    public List<FuncionarioSalario> getFuncionarioSalarioListByDate(Date date) {
+        String sql = "SELECT "
+                + "f.id, "
+                + "f.nome, "
+                + "fs.dataCalculo, "
+                + "fs.salarioBase, "
+                + "fs.bonus, "
+                + "fs.salarioTotal "
+                + "FROM funcionario f "
+                + "LEFT JOIN funcionarioSalario fs "
+                + "ON f.id = fs.idFuncionario "
+                + "WHERE fs.dataCalculo = ? "
+                + "ORDER BY f.nome ASC";
+        FuncionarioSalario funcionarioSalario;
+        List<FuncionarioSalario> funcionarioSalarioList = new ArrayList<>();
+        Connection con = null;
+        PreparedStatement pst = null;
+        ResultSet resultSet = null;
+        try {
+            con = ConnectionFactory.getConnection();
+            pst = con.prepareStatement(sql);
+            pst.setDate(1, new java.sql.Date(date.getTime()));
             resultSet = pst.executeQuery();
 
             while (resultSet.next()) {
@@ -372,7 +421,9 @@ public class FuncionarioDAO {
     }
     
     public List<Funcionario> getFuncionariosByNome(String nomeBusca) {
-        String sql = "SELECT * FROM funcionario WHERE nome LIKE ?";
+        String sql = "SELECT * FROM funcionario "
+                + "WHERE nome LIKE ? "
+                + "ORDER BY nome ASC";
         Funcionario funcionario;
         List<Funcionario> funcionarios = new ArrayList<>();
         Connection con = null;

@@ -6,95 +6,73 @@ package br.ufes.gestaodefuncionarios.collection;
 
 import br.ufes.gestaodefuncionarios.dao.FuncionarioDAO;
 import br.ufes.gestaodefuncionarios.model.Funcionario;
+import br.ufes.gestaodefuncionarios.model.FuncionarioSalario;
 import br.ufes.gestaodefuncionarios.observer.Observable;
 import br.ufes.gestaodefuncionarios.observer.Observer;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  *
  * @author Rafael
  */
-public class FuncionarioCollection implements Observable{
+public class FuncionarioSalarioCollection implements Observable{
     private FuncionarioDAO fDao;
-    private List<Funcionario> funcionarioList;
+    private List<FuncionarioSalario> funcionarioSalarioList;
     private List<Observer> observers;
     
-    private static FuncionarioCollection instance = null;
+    private static FuncionarioSalarioCollection instance = null;
     
-    private FuncionarioCollection() {
+    private FuncionarioSalarioCollection() {
         fDao = new FuncionarioDAO();
-        funcionarioList = new ArrayList<>();
+        funcionarioSalarioList = new ArrayList<>();
         populateList();
         this.observers = new ArrayList<>();
     }
     
-    public static synchronized FuncionarioCollection getInstance() {
+    public static synchronized FuncionarioSalarioCollection getInstance() {
         if(instance == null) {
-            instance =  new FuncionarioCollection();
+            instance =  new FuncionarioSalarioCollection();
         }
         return instance;
     }
     
     private void populateList() {
         try {
-            funcionarioList = fDao.getFuncionarios();
+            funcionarioSalarioList = fDao.getFuncionarioSalarioList();
         } catch(RuntimeException ex) {
             throw new RuntimeException(ex);
         }
     }
     
-    public List<Funcionario> getFuncionarios() {
-        return funcionarioList;
+    public List<FuncionarioSalario> getFuncionarioSalarioList() {
+        return funcionarioSalarioList;
     }
     
-    public List<Funcionario> getFuncionariosByNome(String nome) {
+    public List<FuncionarioSalario> getFuncionarioSalarioListByDate(Date date) {
         try {
-            return fDao.getFuncionariosByNome(nome);
+            System.out.println("entra no collection");
+            return fDao.getFuncionarioSalarioListByDate(date);
         } catch(RuntimeException ex) {
             throw new RuntimeException(ex);
         }
-       
+
     }
     
-    public Funcionario getFuncionarioById(int id) {
+    public void addFuncionarioSalario(FuncionarioSalario fs) {
         try {
-            return fDao.getFuncionarioById(id);
-        } catch(RuntimeException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-    
-    public int getFuncionarioCount() {
-        return funcionarioList.size();
-    }
-    
-    public void criarFuncionario(Funcionario f) {
-        try {
-            fDao.criar(f);
+            fDao.insereFuncionarioSalario(fs);
             populateList();
             notifyObservers("add");
         } catch(RuntimeException ex) {
             throw new RuntimeException(ex);
         }
-    
     }
     
-    public void deleteFuncionario(Funcionario f) {
+    public boolean isSalarioCalculatedFor(Funcionario f, Date dataCalculo) {
         try {
-            fDao.deletar(f);
-            populateList();
-            notifyObservers("delete");
-        } catch(RuntimeException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-    
-    public void atualizaFuncionario(Funcionario f) {
-        try {
-            fDao.atualizar(f);
-            populateList();
-            notifyObservers("update");
+            return fDao.isSalarioCalculatedFor(f, dataCalculo);
         } catch(RuntimeException ex) {
             throw new RuntimeException(ex);
         }
@@ -116,5 +94,4 @@ public class FuncionarioCollection implements Observable{
             o.update(message);
         }
     }
-    
 }
