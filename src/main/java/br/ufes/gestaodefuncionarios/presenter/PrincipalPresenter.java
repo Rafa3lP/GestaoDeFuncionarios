@@ -5,12 +5,11 @@
  */
 package br.ufes.gestaodefuncionarios.presenter;
 
+import br.ufes.gestaodefuncionarios.collection.FuncionarioCollection;
 import br.ufes.gestaodefuncionarios.dao.FuncionarioDAO;
 import br.ufes.gestaodefuncionarios.logger.IMetodoLog;
 import br.ufes.gestaodefuncionarios.logger.Log;
-import br.ufes.gestaodefuncionarios.logger.LogJSON;
-import br.ufes.gestaodefuncionarios.logger.LogTxt;
-import br.ufes.gestaodefuncionarios.logger.LogXml;
+import br.ufes.gestaodefuncionarios.observer.Observer;
 import br.ufes.gestaodefuncionarios.prop.PropertyManager;
 import br.ufes.gestaodefuncionarios.view.PrincipalView;
 import javax.swing.JInternalFrame;
@@ -20,12 +19,15 @@ import javax.swing.JOptionPane;
  *
  * @author Rafael
  */
-public class PrincipalPresenter {
+public class PrincipalPresenter implements Observer {
     
     private PrincipalView view;
     private PropertyManager propertieManager;
+    private FuncionarioCollection fCollection;
     
     public PrincipalPresenter(String logFormat) {
+        this.fCollection = FuncionarioCollection.getInstance();
+        this.fCollection.addObserver(this);
         this.view = new PrincipalView();
         this.propertieManager = new PropertyManager();
         this.view.getLblVersao().setText(this.propertieManager.getProperty("version"));
@@ -71,6 +73,8 @@ public class PrincipalPresenter {
     }
     
     private void fechar() {
+        this.fCollection.removeObserver(this);
+        this.view.dispose();
         System.exit(0);
     }
     
@@ -95,15 +99,14 @@ public class PrincipalPresenter {
     }
     
     public void atualizaNumFuncionarios() {
-        try {
-            FuncionarioDAO fDao = new FuncionarioDAO();
-            int count = fDao.getFuncionarioCount();
-            this.view.getLblNumFuncionarios().setText(Integer.toString(count)); 
-        } catch(RuntimeException ex) {
-            JOptionPane.showMessageDialog(view, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-            App.AppLogger.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao executar operação - " + ex.getMessage()));
-        }
-        
+        int count = fCollection.getFuncionarioCount();
+        this.view.getLblNumFuncionarios().setText(Integer.toString(count));
+       
+    }
+
+    @Override
+    public void update() {
+        atualizaNumFuncionarios();
     }
     
 }

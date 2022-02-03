@@ -5,10 +5,11 @@
  */
 package br.ufes.gestaodefuncionarios.presenter;
 
-import br.ufes.gestaodefuncionarios.dao.FuncionarioDAO;
+import br.ufes.gestaodefuncionarios.collection.FuncionarioCollection;
 import br.ufes.gestaodefuncionarios.logger.IMetodoLog;
 import br.ufes.gestaodefuncionarios.logger.Log;
 import br.ufes.gestaodefuncionarios.model.Funcionario;
+import br.ufes.gestaodefuncionarios.observer.Observer;
 import br.ufes.gestaodefuncionarios.view.BuscarFuncionarioView;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -18,36 +19,44 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Rafael
  */
-public class BuscarFuncionarioPresenter {
+public class BuscarFuncionarioPresenter implements Observer{
     private JTable tabela;
     private PrincipalPresenter principalPresenter;
     private BuscarFuncionarioView view;
+    private FuncionarioCollection fCollection;
 
     public BuscarFuncionarioPresenter(PrincipalPresenter principalPresenter) {
         this.principalPresenter = principalPresenter;
         this.view = new BuscarFuncionarioView();
         this.view.setTitle("Buscar Funcionário");
         this.tabela = this.view.getTFuncionarios();
+        this.fCollection = FuncionarioCollection.getInstance();
         
         try {
+            fCollection.addObserver(this);
             lerTabela();
             habilitarBotoes(false);
             
             this.view.getBtnFechar().addActionListener((e) -> {
                 fechar();
             });
+            
             this.view.getBtnBuscar().addActionListener((e) -> {
                 buscar();
             });
+            
             this.view.getBtnNovo().addActionListener((e) -> {
                 novo();
             });
+            
             this.view.getBtnVisualizar().addActionListener((e) -> {
                 visualizar();
             });
+            
             this.view.getBtnVerBonus().addActionListener((e) -> {
                 verBonus();
             });
+            
             this.tabela.getSelectionModel().addListSelectionListener((e) -> {
                 if(tabela.getSelectedRow() != -1) {
                     habilitarBotoes(true);
@@ -84,17 +93,22 @@ public class BuscarFuncionarioPresenter {
     }
     
     private void visualizar() {
-        new VisualizarFuncionarioPresenter(
-                Integer.parseInt(this.tabela.getValueAt(this.tabela.getSelectedRow(), 0).toString()), 
-                principalPresenter
+        Funcionario funcionario;
+        funcionario = fCollection.getFuncionarioById(
+            Integer.parseInt(
+                this.tabela.getValueAt(
+                    this.tabela.getSelectedRow(), 0
+                )
+                .toString()
+            )
         );
+        new VisualizarFuncionarioPresenter(funcionario, principalPresenter);
     }
     
     private void verBonus() {
         try {
-            FuncionarioDAO fDao = new FuncionarioDAO();
             Funcionario funcionario;
-            funcionario = fDao.getFuncionarioById(
+            funcionario = fCollection.getFuncionarioById(
                 Integer.parseInt(
                     this.tabela.getValueAt(
                         this.tabela.getSelectedRow(), 0
@@ -102,18 +116,18 @@ public class BuscarFuncionarioPresenter {
                     .toString()
                 )
             );
-
             new VerBonusPresenter(true, funcionario);
+            
         } catch(RuntimeException ex) {
             JOptionPane.showMessageDialog(this.view, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             App.AppLogger.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao realizar operação - " + ex.getMessage()));
         }
         
-        
     }
     
     private void fechar() {
         this.view.dispose();
+        fCollection.removeObserver(this);
     }
     
     private void lerTabela() throws RuntimeException {
@@ -121,9 +135,7 @@ public class BuscarFuncionarioPresenter {
             DefaultTableModel modelo = (DefaultTableModel) this.tabela.getModel();
             modelo.setNumRows(0);
 
-            FuncionarioDAO fDao = new FuncionarioDAO();
-
-            for(Funcionario f: fDao.getFuncionarios()) {
+            for(Funcionario f: fCollection.getFuncionarios()) {
                 modelo.addRow(new Object[]{
                     f.getId(),
                     f.getNome(),
@@ -144,9 +156,7 @@ public class BuscarFuncionarioPresenter {
         modelo.setNumRows(0);
         
         try {
-            FuncionarioDAO fDao = new FuncionarioDAO();
-        
-            for(Funcionario f: fDao.getFuncionariosByNome(nome)) {
+            for(Funcionario f: fCollection.getFuncionariosByNome(nome)) {
                 modelo.addRow(new Object[]{
                     f.getId(),
                     f.getNome(),
@@ -165,6 +175,25 @@ public class BuscarFuncionarioPresenter {
     private void habilitarBotoes(boolean flag) {
         this.view.getBtnVerBonus().setEnabled(flag);
         this.view.getBtnVisualizar().setEnabled(flag);
+    }
+
+    @Override
+    public void update() {
+       try {
+           if(!this.view.getTxtNome().getText().isEmpty()) {
+               this.view.getTxtNome().setText("");
+           }
+           lerTabela();
+       } catch(RuntimeException ex) {
+            JOptionPane.showMessageDialog(
+                this.view, 
+                ex.getMessage(), 
+                "Erro", 
+                JOptionPane.ERROR_MESSAGE
+            );
+            App.AppLogger.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao realizar operação - " + ex.getMessage()));
+            fechar();
+       }
     }
     
 }

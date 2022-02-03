@@ -5,28 +5,26 @@
  */
 package br.ufes.gestaodefuncionarios.presenter;
 
-import br.ufes.gestaodefuncionarios.dao.FuncionarioDAO;
+import br.ufes.gestaodefuncionarios.collection.FuncionarioCollection;
 import br.ufes.gestaodefuncionarios.logger.IMetodoLog;
 import br.ufes.gestaodefuncionarios.logger.Log;
-import br.ufes.gestaodefuncionarios.model.BonusGeneroso;
-import br.ufes.gestaodefuncionarios.model.BonusNormal;
 import br.ufes.gestaodefuncionarios.model.Funcionario;
 import br.ufes.gestaodefuncionarios.view.ManterFuncionarioView;
 import java.io.IOException;
 import java.util.Date;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Rafael
  */
 public class CriarFuncionarioPresenter {
-    private FuncionarioDAO dao;
+    private FuncionarioCollection fCollection;
     private ManterFuncionarioView view;
     private PrincipalPresenter principalPresenter;
 
     public CriarFuncionarioPresenter(PrincipalPresenter principalPresenter) {
+        this.fCollection = FuncionarioCollection.getInstance();
         this.view = new ManterFuncionarioView();
         this.principalPresenter = principalPresenter;
         this.view.setTitle("Novo Funcionário");
@@ -50,8 +48,7 @@ public class CriarFuncionarioPresenter {
             
             Funcionario novoFuncionario = getFuncionario();
    
-            dao = new FuncionarioDAO();
-            dao.criar(novoFuncionario);
+            fCollection.criarFuncionario(novoFuncionario);
             
             JOptionPane.showMessageDialog(
                     view, 
@@ -63,8 +60,6 @@ public class CriarFuncionarioPresenter {
             App.AppLogger.escreveLog(new Log(IMetodoLog.LOG_INFORMATION, "Funcionario " + novoFuncionario.getNome() + " adicionado"));
             
             limparCampos();
-            
-            this.principalPresenter.atualizaNumFuncionarios();
             
         } catch(RuntimeException ex) {
             JOptionPane.showMessageDialog(view, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);

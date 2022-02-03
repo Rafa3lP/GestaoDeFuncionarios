@@ -5,7 +5,7 @@
  */
 package br.ufes.gestaodefuncionarios.presenter;
 
-import br.ufes.gestaodefuncionarios.dao.FuncionarioDAO;
+import br.ufes.gestaodefuncionarios.collection.FuncionarioCollection;
 import br.ufes.gestaodefuncionarios.logger.IMetodoLog;
 import br.ufes.gestaodefuncionarios.logger.Log;
 import br.ufes.gestaodefuncionarios.model.Funcionario;
@@ -22,17 +22,15 @@ public class VisualizarFuncionarioPresenter {
     private ManterFuncionarioView view;
     private PrincipalPresenter principalPresenter;
     private Funcionario funcionario;
-    private FuncionarioDAO fDao;
+    private FuncionarioCollection fCollection;
     
-    public VisualizarFuncionarioPresenter(int idFuncionario, PrincipalPresenter principalPresenter) {
-        fDao = new FuncionarioDAO();
+    public VisualizarFuncionarioPresenter(Funcionario funcionario, PrincipalPresenter principalPresenter) {
+        this.fCollection = FuncionarioCollection.getInstance();
         this.principalPresenter = principalPresenter;
         this.view = new ManterFuncionarioView();
-        
+        this.funcionario = funcionario;
+       
         try {
-            
-            this.funcionario = fDao.getFuncionarioById(idFuncionario);
-
             putFuncionario(this.funcionario);
             
             visualizar();
@@ -94,9 +92,8 @@ public class VisualizarFuncionarioPresenter {
         );
         if(confirmacao == JOptionPane.YES_OPTION) {
             try {
-                fDao.deletar(this.funcionario);
+                fCollection.deleteFuncionario(this.funcionario);
                 App.AppLogger.escreveLog(new Log(IMetodoLog.LOG_INFORMATION, "Funcionario " + this.funcionario.getNome() + " removido"));
-                this.principalPresenter.atualizaNumFuncionarios();
                 fechar();
             } catch(RuntimeException ex) {
                 JOptionPane.showMessageDialog(view, ex.getMessage(), "erro", JOptionPane.ERROR_MESSAGE);
@@ -111,7 +108,7 @@ public class VisualizarFuncionarioPresenter {
             
             getFuncionario();
  
-            fDao.atualizar(funcionario);
+            fCollection.atualizaFuncionario(funcionario);
             
             JOptionPane.showMessageDialog(
                     view, 
