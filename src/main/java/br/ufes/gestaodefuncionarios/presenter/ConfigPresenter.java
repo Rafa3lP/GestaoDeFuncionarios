@@ -37,7 +37,6 @@ public class ConfigPresenter {
         pbar = new JProgressBar();
         pbar.setIndeterminate(true);
         pbar.setStringPainted(true);
-        pbar.setString("Migrando Logs...");
         pbar.setBounds(145,140,130,25);
         pbar.setVisible(false);
         view.getjPainel().add(pbar);
@@ -98,7 +97,8 @@ public class ConfigPresenter {
                 @Override
                 public void run() {
                     view.getBtnOk().setEnabled(false);
-                   
+                    
+                    pbar.setString("Migrando Logs...");
                     pbar.setVisible(true);
                     
                     newMetodoLog.migraLog(App.AppLogger);
