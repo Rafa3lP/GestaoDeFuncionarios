@@ -5,6 +5,9 @@
  */
 package br.ufes.gestaodefuncionarios.prop;
 
+import br.ufes.gestaodefuncionarios.logger.IMetodoLog;
+import br.ufes.gestaodefuncionarios.logger.Log;
+import br.ufes.gestaodefuncionarios.presenter.App;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -28,6 +31,7 @@ public class PropertyManager {
             properties.load(fis);
         } catch (IOException e) {
             e.printStackTrace();
+            App.AppLogger.escreveLog(new Log(IMetodoLog.LOG_ERROR,"Falha ao executar operação - " + e.getMessage()));
         }
         
         return properties.getProperty(key);
@@ -44,6 +48,7 @@ public class PropertyManager {
             properties.load(fis);
         } catch (IOException e) {
             e.printStackTrace();
+            App.AppLogger.escreveLog(new Log(IMetodoLog.LOG_ERROR,"Falha ao executar operação - " + e.getMessage()));
         }
        
         properties.setProperty(key, value);
@@ -52,8 +57,9 @@ public class PropertyManager {
             FileOutputStream fos = new FileOutputStream(file); 
             properties.store(fos, "ARQUIVO DE CONFIGURACOES"); 
             fos.close(); 
-        } catch (IOException ex) { 
-            System.out.println(ex.getMessage()); ex.printStackTrace(); 
+        } catch (IOException ex) {  
+            ex.printStackTrace(); 
+            App.AppLogger.escreveLog(new Log(IMetodoLog.LOG_ERROR,"Falha ao executar operação - " + ex.getMessage()));
         }
  
     }

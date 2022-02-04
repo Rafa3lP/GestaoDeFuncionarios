@@ -6,6 +6,7 @@
 package br.ufes.gestaodefuncionarios.view;
 
 import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
@@ -179,5 +180,9 @@ public class BuscarFuncionarioView extends javax.swing.JInternalFrame {
 
     public JTable getTFuncionarios() {
         return tFuncionarios;
+    }
+
+    public JPanel getPainel() {
+        return jPanel1;
     }
 }

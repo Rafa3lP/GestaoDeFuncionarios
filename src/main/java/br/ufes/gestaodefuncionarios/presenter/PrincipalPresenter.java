@@ -6,14 +6,10 @@
 package br.ufes.gestaodefuncionarios.presenter;
 
 import br.ufes.gestaodefuncionarios.collection.FuncionarioCollection;
-import br.ufes.gestaodefuncionarios.dao.FuncionarioDAO;
-import br.ufes.gestaodefuncionarios.logger.IMetodoLog;
-import br.ufes.gestaodefuncionarios.logger.Log;
 import br.ufes.gestaodefuncionarios.observer.Observer;
 import br.ufes.gestaodefuncionarios.prop.PropertyManager;
 import br.ufes.gestaodefuncionarios.view.PrincipalView;
 import javax.swing.JInternalFrame;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -25,14 +21,13 @@ public class PrincipalPresenter implements Observer {
     private PropertyManager propertieManager;
     private FuncionarioCollection fCollection;
     
-    public PrincipalPresenter(String logFormat) {
+    public PrincipalPresenter() {
         this.fCollection = FuncionarioCollection.getInstance();
         this.fCollection.addObserver(this);
         this.view = new PrincipalView();
-        this.propertieManager = new PropertyManager();
-        this.view.getLblVersao().setText(this.propertieManager.getProperty("version"));
+        this.view.getLblVersao().setText(App.getVersion());
         
-        switch (logFormat) {
+        switch (App.getLogFormat()) {
             case "txt":
                 this.view.getLblLogFormat().setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/txt-48.png")));
                 break;

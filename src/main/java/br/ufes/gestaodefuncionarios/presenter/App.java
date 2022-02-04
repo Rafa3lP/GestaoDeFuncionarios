@@ -26,10 +26,11 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class App {
     public static IMetodoLog AppLogger;
+    private static String version;
+    private static String logFormat;
     
     public static void main(String[] args) {
-        String logFormat = getLogFormat();
-        
+        getProperties();
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
@@ -37,13 +38,13 @@ public class App {
             AppLogger.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao Executar operação - " + ex.getMessage()));
         }
         
-        new PrincipalPresenter(logFormat);
+        new PrincipalPresenter();
         
     }
     
-    private static String getLogFormat() {
+    private static void getProperties() {
         PropertyManager propertyManager = new PropertyManager();
-        String logFormat;
+        
         logFormat = propertyManager.getProperty("logFormat");
         
         AppLogger = null;
@@ -64,7 +65,8 @@ public class App {
                 System.exit(1);
                 break;
         }
-       return logFormat;
+       
+        version = propertyManager.getProperty("version");
     }
     
     public static void restart() {
@@ -75,12 +77,22 @@ public class App {
             cmd.append("-jar ").append(ManagementFactory.getRuntimeMXBean().getClassPath()).append(" ");
           
             Runtime.getRuntime().exec(cmd.toString());
-            System.out.println("Executar comando: \n " + cmd.toString());
+            //System.out.println("Executar comando: \n " + cmd.toString());
             System.exit(0);
         } catch (IOException ex) {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
             AppLogger.escreveLog(new Log(IMetodoLog.LOG_ERROR, "Falha ao realizar operação - " + ex.getMessage()));
         }
     }
+
+    public static String getVersion() {
+        return version;
+    }
+
+    public static String getLogFormat() {
+        return logFormat;
+    }
+    
+    
    
 }

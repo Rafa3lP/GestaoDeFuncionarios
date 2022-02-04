@@ -13,6 +13,7 @@ import br.ufes.gestaodefuncionarios.logger.LogXml;
 import br.ufes.gestaodefuncionarios.prop.PropertyManager;
 import br.ufes.gestaodefuncionarios.view.ConfigView;
 import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
 
 /**
  *
@@ -22,7 +23,9 @@ public class ConfigPresenter {
     private PrincipalPresenter principalPresenter;
     private ConfigView view;
     private PropertyManager propertieManager;
-
+    private JProgressBar pbar;
+    
+    
     public ConfigPresenter(PrincipalPresenter principalPresenter) {
         this.principalPresenter = principalPresenter;
         this.view = new ConfigView();
@@ -30,6 +33,14 @@ public class ConfigPresenter {
         this.view.setTitle("Configurar");
         
         String logFormat = propertieManager.getProperty("logFormat");
+        
+        pbar = new JProgressBar();
+        pbar.setIndeterminate(true);
+        pbar.setStringPainted(true);
+        pbar.setString("Migrando Logs...");
+        pbar.setBounds(145,140,130,25);
+        pbar.setVisible(false);
+        view.getjPainel().add(pbar);
         
         this.view.getCbFormatoLog().setSelectedItem(logFormat);
         
@@ -49,7 +60,7 @@ public class ConfigPresenter {
                 }
                 
             }
-            fechar();
+
         });
         
         this.principalPresenter.addToDesktopPane(this.view);
@@ -83,15 +94,37 @@ public class ConfigPresenter {
                     throw new RuntimeException("Não foi possível alterar o formato do log");
             }
             
-            newMetodoLog.migraLog(App.AppLogger);
+            new Thread() {
+                @Override
+                public void run() {
+                    view.getBtnOk().setEnabled(false);
+                   
+                    pbar.setVisible(true);
+                    
+                    newMetodoLog.migraLog(App.AppLogger);
+                    propertieManager.setProp("logFormat", logFormat);
+                    
+                    view.getjPainel().remove(pbar);
+                    
+                    view.getBtnOk().setEnabled(true);
+                    
+                    JOptionPane.showMessageDialog(
+                            null, 
+                            "Sucesso ao migrar logs!"
+                            + "\nO sistema será encerrado agora", 
+                            "Sucesso", 
+                            JOptionPane.WARNING_MESSAGE
+                    );
+                    
+                    fechar();
+                    
+                    App.restart();
+                    
+                }
+            }.start();
             
-            propertieManager.setProp("logFormat", logFormat);
-            
-            App.restart();
         }
-        
-        fechar();
-        
+       
     }
    
 }

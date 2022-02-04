@@ -47,12 +47,12 @@ public class FuncionarioSalarioCollection implements Observable{
     }
     
     public List<FuncionarioSalario> getFuncionarioSalarioList() {
+        populateList();
         return funcionarioSalarioList;
     }
     
     public List<FuncionarioSalario> getFuncionarioSalarioListByDate(Date date) {
         try {
-            System.out.println("entra no collection");
             return fDao.getFuncionarioSalarioListByDate(date);
         } catch(RuntimeException ex) {
             throw new RuntimeException(ex);

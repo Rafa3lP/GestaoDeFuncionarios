@@ -230,7 +230,7 @@ public class FuncionarioDAO {
     
     public List<Funcionario> getFuncionarios() {
         String sql = "SELECT * FROM funcionario "
-                + "ORDER BY nome ASC";
+                + "ORDER BY nome COLLATE NOCASE ASC";
         Funcionario funcionario;
         List<Funcionario> funcionarios = new ArrayList<>();
         Connection con = null;
@@ -310,7 +310,7 @@ public class FuncionarioDAO {
                 + "FROM funcionario f "
                 + "LEFT JOIN funcionarioSalario fs "
                 + "ON f.id = fs.idFuncionario "
-                + "ORDER BY f.nome ASC";
+                + "ORDER BY f.nome COLLATE NOCASE ASC";
         FuncionarioSalario funcionarioSalario;
         List<FuncionarioSalario> funcionarioSalarioList = new ArrayList<>();
         Connection con = null;
@@ -354,7 +354,7 @@ public class FuncionarioDAO {
                 + "LEFT JOIN funcionarioSalario fs "
                 + "ON f.id = fs.idFuncionario "
                 + "WHERE fs.dataCalculo = ? "
-                + "ORDER BY f.nome ASC";
+                + "ORDER BY f.nome COLLATE NOCASE ASC";
         FuncionarioSalario funcionarioSalario;
         List<FuncionarioSalario> funcionarioSalarioList = new ArrayList<>();
         Connection con = null;
@@ -423,7 +423,7 @@ public class FuncionarioDAO {
     public List<Funcionario> getFuncionariosByNome(String nomeBusca) {
         String sql = "SELECT * FROM funcionario "
                 + "WHERE nome LIKE ? "
-                + "ORDER BY nome ASC";
+                + "ORDER BY nome COLLATE NOCASE ASC";
         Funcionario funcionario;
         List<Funcionario> funcionarios = new ArrayList<>();
         Connection con = null;

@@ -11,6 +11,7 @@ import br.ufes.gestaodefuncionarios.model.BonusTempodeServico;
 import br.ufes.gestaodefuncionarios.model.BonusAssiduidade;
 import br.ufes.gestaodefuncionarios.logger.IMetodoLog;
 import br.ufes.gestaodefuncionarios.logger.Log;
+import br.ufes.gestaodefuncionarios.model.BonusDecimoTerceiro;
 import br.ufes.gestaodefuncionarios.model.BonusFuncionarioMes;
 import br.ufes.gestaodefuncionarios.model.BonusGeneroso;
 import br.ufes.gestaodefuncionarios.model.BonusNormal;
@@ -41,11 +42,12 @@ public class CalcularSalarioPresenter implements Observer{
     public CalcularSalarioPresenter(PrincipalPresenter principalPresenter) {
         this.principalPresenter = principalPresenter;
         this.fCollection = FuncionarioCollection.getInstance();
-        this.fCollection.addObserver(this);
         this.fsCollection = FuncionarioSalarioCollection.getInstance();
         this.view = new CalcularSalarioView();
         this.view.setTitle("Calcular Salário");
         this.tabela = view.getTSalario();
+        
+        this.fCollection.addObserver(this);
         
         this.tiposDeBonus = new ArrayList<>();
         
@@ -54,6 +56,7 @@ public class CalcularSalarioPresenter implements Observer{
         tiposDeBonus.add(new BonusAssiduidade());
         tiposDeBonus.add(new BonusTempodeServico());
         tiposDeBonus.add(new BonusFuncionarioMes());
+        tiposDeBonus.add(new BonusDecimoTerceiro());
 
         lerTabela();
         
@@ -80,7 +83,6 @@ public class CalcularSalarioPresenter implements Observer{
         });
         
         this.view.getBtnBuscar().addActionListener((e) -> {
-            System.out.println("clicou");
             lerTabelaByDate(this.view.getDtBusca().getDate());
         });
         
@@ -123,7 +125,6 @@ public class CalcularSalarioPresenter implements Observer{
     
     private void lerTabelaByDate(Date date) {
         try {
-            System.out.println("entra na funcao");
             DefaultTableModel modelo = (DefaultTableModel) this.tabela.getModel();
             modelo.setNumRows(0);
             
