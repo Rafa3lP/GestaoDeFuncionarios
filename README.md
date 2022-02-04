@@ -1,9 +1,13 @@
 # Gestão de Funcionários
+Projeto da disciplina de Projeto de Sistemas de Software
 
 COD_ATIVIDADE = P1_PSS_2021-2
 
 Discente: Rafael de Andrade Prenholato
 
+O objetivo é criar um sistema CRUD de funcionários capaz de calcular os salários dos mesmos atribuindo bônus quando merecido e gravar logs em diferentes formatos. 
+
+Tudo seguindo as especificações preliminares do software.
 ## Gerar .jar
 ```bash
 mvn clean install
